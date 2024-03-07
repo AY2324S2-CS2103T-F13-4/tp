@@ -39,6 +39,7 @@ public class PersonBuilder {
         email = new Email(DEFAULT_EMAIL);
         address = new Address(DEFAULT_ADDRESS);
         tags = new HashSet<>();
+        remark = new Remark(DEFAULT_REMARK);
     }
 
     /**
@@ -93,6 +94,12 @@ public class PersonBuilder {
         return this;
     }
 
+    /**
+     * Sets the remark of the person that we are building.
+     *
+     * @param remark to set.
+     * @return PersonBuilder object.
+     */
     public PersonBuilder withRemark(String remark) {
         this.remark = new Remark(remark);
         return this;
