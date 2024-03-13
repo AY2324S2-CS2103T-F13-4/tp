@@ -93,13 +93,6 @@ public class PersonBuilder {
         this.email = new Email(email);
         return this;
     }
-<<<<<<< HEAD
-=======
-
-    /**
-     * Sets the {@code Remark} of the {@code Person} that we are building.
-     */
->>>>>>> 6acd8195 (Fix CheckStyle issues)
     public PersonBuilder withRemark(String remark) {
         this.remark = new Remark(remark);
         return this;
