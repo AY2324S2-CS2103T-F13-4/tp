@@ -2,10 +2,6 @@ package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-<<<<<<< HEAD
-=======
-
->>>>>>> a0c4d7f9 (Implement Remark Command)
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMARK;
 
 import seedu.address.commons.core.index.Index;
@@ -14,7 +10,6 @@ import seedu.address.logic.commands.RemarkCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Remark;
 
-<<<<<<< HEAD
 /**
  * Parses input arguments and creates a new RemarkCommand object
  */
@@ -25,9 +20,6 @@ public class RemarkCommandParser implements Parser<RemarkCommand> {
      * and returns a FindCommand object for execution.
      * @throws ParseException if the user input does not conform the expected format
      */
-=======
-public class RemarkCommandParser implements Parser<RemarkCommand>{
->>>>>>> a0c4d7f9 (Implement Remark Command)
     public RemarkCommand parse(String args) throws ParseException {
         requireNonNull(args);
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args,
