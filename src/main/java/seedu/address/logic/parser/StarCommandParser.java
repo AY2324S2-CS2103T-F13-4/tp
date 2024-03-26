@@ -24,7 +24,7 @@ public class StarCommandParser implements Parser<StarCommand> {
     public StarCommand parse(String args) throws ParseException {
         requireNonNull(args);
         ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_STAR); // tokenize args by PREFIX_STAR
+                ArgumentTokenizer.tokenize(args, PREFIX_STAR); // tokenise args by PREFIX_STAR
 
 
         if (!arePrefixesPresent(argMultimap, PREFIX_STAR)

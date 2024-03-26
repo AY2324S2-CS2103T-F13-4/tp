@@ -1,7 +1,6 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_BOLT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_MAJOR;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
@@ -23,7 +22,6 @@ import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
-import seedu.address.model.person.Bolt;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Major;
 import seedu.address.model.person.Name;
@@ -48,7 +46,6 @@ public class EditCommand extends Command {
             + "[" + PREFIX_EMAIL + "EMAIL] "
             + "[" + PREFIX_MAJOR + "MAJOR] "
             + "[" + PREFIX_STAR + "STAR] "
-            + "[" + PREFIX_BOLT + "BOLT] "
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
@@ -82,7 +79,7 @@ public class EditCommand extends Command {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
-        Person personToEdit = lastShownList.get(index.getZeroBased()); // get the person we are editing
+        Person personToEdit = lastShownList.get(index.getZeroBased()); // get the person we are editting
         Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
 
         if (!personToEdit.isSamePerson(editedPerson) && model.hasPerson(editedPerson)) {
@@ -106,10 +103,9 @@ public class EditCommand extends Command {
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
         Major updatedMajor = editPersonDescriptor.getMajor().orElse(personToEdit.getMajor());
         Star updatedStar = editPersonDescriptor.getStar().orElse(personToEdit.getStar());
-        Bolt updatedBolt = editPersonDescriptor.getBolt().orElse(personToEdit.getBolt());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
         // use new Constructor
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedMajor, updatedStar, updatedBolt, updatedTags);
+        return new Person(updatedName, updatedPhone, updatedEmail, updatedMajor, updatedStar, updatedTags);
     }
 
     @Override
@@ -146,7 +142,6 @@ public class EditCommand extends Command {
         private Email email;
         private Major major;
         private Star star;
-        private Bolt bolt;
         private Set<Tag> tags;
 
         public EditPersonDescriptor() {}
@@ -161,7 +156,6 @@ public class EditCommand extends Command {
             setEmail(toCopy.email);
             setMajor(toCopy.major);
             setStar(toCopy.star);
-            setBolt(toCopy.bolt);
             setTags(toCopy.tags);
         }
 
@@ -169,7 +163,7 @@ public class EditCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, major, star, bolt, tags);
+            return CollectionUtil.isAnyNonNull(name, phone, email, major, star, tags);
         }
 
         public void setName(Name name) {
@@ -212,14 +206,6 @@ public class EditCommand extends Command {
             return Optional.ofNullable(star);
         }
 
-        public void setBolt(Bolt bolt) {
-            this.bolt = bolt;
-        }
-
-        public Optional<Bolt> getBolt() {
-            return Optional.ofNullable(bolt);
-        }
-
         /**
          * Sets {@code tags} to this object's {@code tags}.
          * A defensive copy of {@code tags} is used internally.
@@ -254,7 +240,6 @@ public class EditCommand extends Command {
                     && Objects.equals(email, otherEditPersonDescriptor.email)
                     && Objects.equals(major, otherEditPersonDescriptor.major)
                     && Objects.equals(star, otherEditPersonDescriptor.star) // add in Star
-                    && Objects.equals(bolt, otherEditPersonDescriptor.bolt) // add in Bolt
                     && Objects.equals(tags, otherEditPersonDescriptor.tags);
         }
 
@@ -266,7 +251,6 @@ public class EditCommand extends Command {
                     .add("email", email)
                     .add("major", major)
                     .add("star", star)
-                    .add("bolt", bolt)
                     .add("tags", tags)
                     .toString();
         }

@@ -41,8 +41,6 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private Label star;
     @FXML
-    private Label bolt;
-    @FXML
     private FlowPane tags;
 
     /**
@@ -57,7 +55,6 @@ public class PersonCard extends UiPart<Region> {
         major.setText(person.getMajor().value);
         email.setText(person.getEmail().value);
         star.setText(person.getStar().toString()); // need String representation
-        bolt.setText(person.getBolt().toString());
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
                 .forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
