@@ -125,16 +125,47 @@ Examples:
 
 ### Awarding a student stars for participation : `star`
 
-Awards a student stars for good participation in class.
+**Format**: `star INDEX [s/STAR]`
 
-Format: `star INDEX [s/STAR]`
+> Awards a student stars for good participation in class.
 
+```info
 * Edits the student at the specified `INDEX`. The index refers to the index number shown in the displayed student list. The index **must be a positive integer** 1, 2, 3, …​
 * The `STAR` is given as an unsigned integer, meaning it **has to be a whole number** starting from 0, 1, 2, …​
 * The `STAR` will add onto existing number of stars the student already has.
+```
 
-Examples:
-*  `star 1 s/5` Adds 5 stars to the first student in the contact book.
+**Example:**
+
+**Command Input**: `star 1 s/5`
+
+**Assumptions**:
+* Alex Yeoh is the student at Index 1
+* He currently has 0 stars
+
+**Command Output**: `Added stars to Student: Alex Yeoh; [...]` 
+
+### Awarding a student bolts for being absent : `bolt`
+
+**Format**: `bolt INDEX [b/BOLT]`
+
+> Awards a student bolts for being absent in class. The number of bolts corresponds to the number of times the student is absent.
+
+```info
+* Edits the student at the specified `INDEX`. The index refers to the index number shown in the displayed student list. The index **must be a positive integer** 1, 2, 3, …​
+* The `BOLT` is given as an unsigned integer, meaning it **has to be a whole number** starting from 0, 1, 2, …​
+* The `BOLT` will add onto existing number of stars the student already has.
+```
+
+**Example:**
+
+**Command Input**: `bolt 1 b/5`
+
+**Assumptions**:
+* Alex Yeoh is the student at Index 1
+* He currently has 0 bolts
+
+**Command Output**: `Added bolts to Student: Alex Yeoh; [...]`
 
 ### Locating students by name: `find`
 
