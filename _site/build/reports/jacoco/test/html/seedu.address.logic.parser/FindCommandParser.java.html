@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FindCommandParser.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tp</a> &gt; <a href="index.source.html" class="el_package">seedu.address.logic.parser</a> &gt; <span class="el_source">FindCommandParser.java</span></div><h1>FindCommandParser.java</h1><pre class="source lang-java linenums">package seedu.address.logic.parser;
+
+import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+
+import java.util.Arrays;
+
+import seedu.address.logic.commands.FindCommand;
+import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.student.predicates.BoltWithinBoundsPredicate;
+import seedu.address.model.student.predicates.MajorContainsSubStringPredicate;
+import seedu.address.model.student.predicates.NameContainsKeywordsPredicate;
+import seedu.address.model.student.predicates.StarWithinBoundsPredicate;
+import seedu.address.model.student.predicates.TagContainsSubStringPredicate;
+
+/**
+ * Parses input arguments and creates a new FindCommand object
+ */
+<span class="fc" id="L18">public class FindCommandParser implements Parser&lt;FindCommand&gt; {</span>
+
+    /**
+     * Parses the given {@code String} of arguments in the context of the FindCommand
+     * and returns a FindCommand object for execution.
+     * @throws ParseException if the user input does not conform the expected format
+     */
+    public FindCommand parse(String args) throws ParseException {
+<span class="pc bpc" id="L26" title="1 of 4 branches missed.">        if (args.isEmpty() || args.isBlank()) {</span>
+<span class="fc" id="L27">            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));</span>
+        }
+
+<span class="fc" id="L30">        String trimmedArgs = args.trim();</span>
+<span class="fc" id="L31">        String[] parts = trimmedArgs.split(&quot;\\s+&quot;);</span>
+<span class="fc" id="L32">        String field = parts[0].trim();</span>
+<span class="fc" id="L33">        String argsToMatch = trimmedArgs.substring(field.length()).trim();</span>
+
+<span class="fc bfc" id="L35" title="All 6 branches covered.">        switch (field) {</span>
+        case &quot;name&quot;:
+<span class="fc" id="L37">            return parseFindName(argsToMatch);</span>
+
+        case &quot;major&quot;:
+<span class="fc" id="L40">            return parseFindMajor(argsToMatch);</span>
+
+        case &quot;star&quot;:
+<span class="fc" id="L43">            return parseFindStar(argsToMatch);</span>
+
+        case &quot;bolt&quot;:
+<span class="fc" id="L46">            return parseFindBolt(argsToMatch);</span>
+
+        case &quot;tag&quot;:
+<span class="fc" id="L49">            return parseFindTag(argsToMatch);</span>
+
+        default:
+<span class="fc" id="L52">            throw new ParseException(</span>
+<span class="fc" id="L53">                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));</span>
+        }
+    }
+
+    /**
+     * Parses the given {@code String} of arguments in the context of the FindCommand (by name)
+     * and returns a FindCommand object for execution.
+     *
+     * @throws ParseException if the user input does not conform the expected format
+    */
+    public FindCommand parseFindName(String args) throws ParseException {
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        if (args.isEmpty()) {</span>
+<span class="fc" id="L65">            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,</span>
+<span class="fc" id="L66">                    FindCommand.getSpecificMessageUsage(&quot;name&quot;)));</span>
+        }
+<span class="fc" id="L68">        String[] nameKeywords = args.split(&quot;\\s+&quot;);</span>
+<span class="fc" id="L69">        return new FindCommand(new NameContainsKeywordsPredicate(Arrays.asList(nameKeywords)));</span>
+    }
+
+    /**
+     * Parses the given {@code String} of arguments in the context of the FindCommand (by major)
+     * and returns a FindCommand object for execution.
+     *
+     * @throws ParseException if the user input does not conform the expected format
+     */
+    public FindCommand parseFindMajor(String args) throws ParseException {
+<span class="fc bfc" id="L79" title="All 2 branches covered.">        if (args.isEmpty()) {</span>
+<span class="fc" id="L80">            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,</span>
+<span class="fc" id="L81">                    FindCommand.getSpecificMessageUsage(&quot;major&quot;)));</span>
+        }
+<span class="fc" id="L83">        return new FindCommand(new MajorContainsSubStringPredicate(args));</span>
+    }
+
+    /**
+     * Parses the given {@code String} of arguments in the context of the FindCommand (by star)
+     * and returns a FindCommand object for execution.
+     *
+     * @throws ParseException if the user input does not conform the expected format
+     */
+    public FindCommand parseFindStar(String args) throws ParseException {
+        try {
+<span class="fc" id="L94">            String[] starArgs = args.split(&quot; &quot;, 2);</span>
+<span class="fc" id="L95">            String sOperator = starArgs[0];</span>
+<span class="fc" id="L96">            Integer sOperand = Integer.parseInt(starArgs[1].trim());</span>
+
+<span class="fc bfc" id="L98" title="All 4 branches covered.">            if (isInvalidOperator(sOperator) || sOperand &lt; 0) {</span>
+<span class="fc" id="L99">                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,</span>
+<span class="fc" id="L100">                        FindCommand.getSpecificMessageUsage(&quot;star&quot;)));</span>
+            }
+
+<span class="fc" id="L103">            return new FindCommand(new StarWithinBoundsPredicate(sOperator, sOperand));</span>
+<span class="fc" id="L104">        } catch (IndexOutOfBoundsException | NumberFormatException e) {</span>
+<span class="fc" id="L105">            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,</span>
+<span class="fc" id="L106">                    FindCommand.getSpecificMessageUsage(&quot;star&quot;)));</span>
+        }
+    }
+
+    /**
+     * Parses the given {@code String} of arguments in the context of the FindCommand (by bolt)
+     * and returns a FindCommand object for execution.
+     *
+     * @throws ParseException if the user input does not conform the expected format
+     */
+    public FindCommand parseFindBolt(String args) throws ParseException {
+        try {
+<span class="fc" id="L118">            String[] boltArgs = args.split(&quot; &quot;, 2);</span>
+<span class="fc" id="L119">            String bOperator = boltArgs[0];</span>
+<span class="fc" id="L120">            Integer bOperand = Integer.parseInt(boltArgs[1].trim());</span>
+
+<span class="fc bfc" id="L122" title="All 4 branches covered.">            if (isInvalidOperator(bOperator) || bOperand &lt; 0) {</span>
+<span class="fc" id="L123">                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,</span>
+<span class="fc" id="L124">                        FindCommand.getSpecificMessageUsage(&quot;bolt&quot;)));</span>
+            }
+
+<span class="fc" id="L127">            return new FindCommand(new BoltWithinBoundsPredicate(bOperator, bOperand));</span>
+<span class="fc" id="L128">        } catch (IndexOutOfBoundsException | NumberFormatException e) {</span>
+<span class="fc" id="L129">            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,</span>
+<span class="fc" id="L130">                    FindCommand.getSpecificMessageUsage(&quot;bolt&quot;)));</span>
+        }
+    }
+
+    /**
+     * Parses the given {@code String} of arguments in the context of the FindCommand (by tag)
+     * and returns a FindCommand object for execution.
+     *
+     * @throws ParseException if the user input does not conform the expected format
+     */
+    public FindCommand parseFindTag(String args) throws ParseException {
+<span class="fc bfc" id="L141" title="All 2 branches covered.">        if (args.isEmpty()) {</span>
+<span class="fc" id="L142">            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,</span>
+<span class="fc" id="L143">                    FindCommand.getSpecificMessageUsage(&quot;tag&quot;)));</span>
+        }
+<span class="fc" id="L145">        return new FindCommand(new TagContainsSubStringPredicate(args));</span>
+    }
+
+    /**
+     * Checks if the operator is valid.
+     *
+     * @param operator
+     * @return
+     */
+    public boolean isInvalidOperator(String operator) {
+<span class="fc bfc" id="L155" title="All 2 branches covered.">        return !operator.equals(&quot;&lt;&quot;)</span>
+<span class="pc bpc" id="L156" title="1 of 2 branches missed.">                &amp;&amp; !operator.equals(&quot;&gt;&quot;)</span>
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">                &amp;&amp; !operator.equals(&quot;&lt;=&quot;)</span>
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">                &amp;&amp; !operator.equals(&quot;&gt;=&quot;)</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">                &amp;&amp; !operator.equals(&quot;=&quot;);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

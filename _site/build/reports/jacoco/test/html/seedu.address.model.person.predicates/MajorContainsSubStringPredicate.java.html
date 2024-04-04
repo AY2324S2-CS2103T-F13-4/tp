@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MajorContainsSubStringPredicate.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tp</a> &gt; <a href="index.source.html" class="el_package">seedu.address.model.person.predicates</a> &gt; <span class="el_source">MajorContainsSubStringPredicate.java</span></div><h1>MajorContainsSubStringPredicate.java</h1><pre class="source lang-java linenums">package seedu.address.model.person.predicates;
+
+import java.util.function.Predicate;
+
+import seedu.address.commons.util.StringUtil;
+import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.model.person.Person;
+
+/**
+ * Tests that a {@code Person}'s {@code Major} contains the sub string specified.
+ */
+public class MajorContainsSubStringPredicate implements Predicate&lt;Person&gt; {
+    private final String subString;
+
+<span class="fc" id="L15">    public MajorContainsSubStringPredicate(String subString) {</span>
+<span class="fc" id="L16">        this.subString = subString;</span>
+<span class="fc" id="L17">    }</span>
+
+    @Override
+    public boolean test(Person person) {
+<span class="pc bpc" id="L21" title="1 of 4 branches missed.">        if (subString.isEmpty() || subString.isBlank()) {</span>
+<span class="fc" id="L22">            return false;</span>
+        }
+<span class="fc" id="L24">        return StringUtil.containsSubstringIgnoreCase(person.getMajor().toString(), subString);</span>
+    }
+
+    @Override
+    public boolean equals(Object other) {
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        if (other == this) {</span>
+<span class="fc" id="L30">            return true;</span>
+        }
+
+        // instanceof handles nulls
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (!(other instanceof MajorContainsSubStringPredicate)) {</span>
+<span class="fc" id="L35">            return false;</span>
+        }
+
+<span class="fc" id="L38">        MajorContainsSubStringPredicate otherMajorContainsKeywordsPredicate = (MajorContainsSubStringPredicate) other;</span>
+<span class="fc" id="L39">        return subString.equals(otherMajorContainsKeywordsPredicate.subString);</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L44">        return new ToStringBuilder(this)</span>
+<span class="fc" id="L45">                .add(&quot;sub string&quot;, subString).toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

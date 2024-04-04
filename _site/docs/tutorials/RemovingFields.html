@@ -1,0 +1,121 @@
+<blockquote>
+  <p>Perfection is achieved, not when there is nothing more to add, but when there is nothing left to take away.</p>
+
+  <p>—  Antoine de Saint-Exupery</p>
+</blockquote>
+
+<p>When working on an existing code base, you will most likely find that some features that are no longer necessary.
+This tutorial aims to give you some practice on such a code ‘removal’ activity by removing the <code class="language-plaintext highlighter-rouge">address</code> field from <code class="language-plaintext highlighter-rouge">Student</code> class.</p>
+
+<div class="alert alert-success">
+
+<strong>If you have done the <a href="AddRemark.html">Add <code class="language-plaintext highlighter-rouge">remark</code> command tutorial</a>  already</strong>, you should know where the code had to be updated to add the field <code class="language-plaintext highlighter-rouge">remark</code>. From that experience, you can deduce where the code needs to be changed to <em>remove</em> that field too. The removing of the <code class="language-plaintext highlighter-rouge">address</code> field can be done similarly.
+<br />
+<br />
+However, if you have no such prior knowledge, removing a field can take a quite a bit of detective work. This tutorial takes you through that process. <strong>At least have a read even if you don’t actually do the steps yourself.</strong>
+</div>
+
+<ul id="markdown-toc">
+  <li><a href="#safely-deleting-address" id="markdown-toc-safely-deleting-address">Safely deleting <code class="language-plaintext highlighter-rouge">Address</code></a>    <ul>
+      <li><a href="#assisted-refactoring" id="markdown-toc-assisted-refactoring">Assisted refactoring</a></li>
+      <li><a href="#manual-refactoring" id="markdown-toc-manual-refactoring">Manual refactoring</a></li>
+    </ul>
+  </li>
+  <li><a href="#tidying-up" id="markdown-toc-tidying-up">Tidying up</a></li>
+</ul>
+
+<h2 id="safely-deleting-address">Safely deleting <code class="language-plaintext highlighter-rouge">Address</code></h2>
+
+<p>IntelliJ IDEA provides a refactoring tool that can identify <em>most</em> parts of a removal easily. Let’s try to use it as much as we can.</p>
+
+<h3 id="assisted-refactoring">Assisted refactoring</h3>
+
+<p>The <code class="language-plaintext highlighter-rouge">address</code> field in <code class="language-plaintext highlighter-rouge">Student</code> is actually an instance of the <code class="language-plaintext highlighter-rouge">seedu.address.model.student.Address</code> class. Since removing the <code class="language-plaintext highlighter-rouge">Address</code> class will break the application, we start by identifying <code class="language-plaintext highlighter-rouge">Address</code>’s usages. This allows us to see code that depends on <code class="language-plaintext highlighter-rouge">Address</code> to function properly and edit them on a case-by-case basis. Right-click the <code class="language-plaintext highlighter-rouge">Address</code> class and select <code class="language-plaintext highlighter-rouge">Refactor</code> &gt; <code class="language-plaintext highlighter-rouge">Safe Delete</code> through the menu.</p>
+<ul>
+  <li>:bulb: To make things simpler, you can unselect the options <code class="language-plaintext highlighter-rouge">Search in comments and strings</code> and <code class="language-plaintext highlighter-rouge">Search for text occurrences</code></li>
+</ul>
+
+<p><img src="../images/remove/UnsafeDelete.png" alt="Usages detected" /></p>
+
+<p>Choose to <code class="language-plaintext highlighter-rouge">View Usages</code> and you should be presented with a list of <code class="language-plaintext highlighter-rouge">Safe Delete Conflicts</code>. These conflicts describe locations in which the <code class="language-plaintext highlighter-rouge">Address</code> class is used.</p>
+
+<p><img src="../images/remove/SafeDeleteConflicts.png" alt="List of conflicts" /></p>
+
+<p>Remove usages of <code class="language-plaintext highlighter-rouge">Address</code> by performing <code class="language-plaintext highlighter-rouge">Safe Delete</code>s on each entry i.e., double-click on the entry (which takes you to the code in concern, right-click on that entity, and choose <code class="language-plaintext highlighter-rouge">Refactor</code> -&gt; <code class="language-plaintext highlighter-rouge">Safe delete</code> as before). You will need to exercise discretion when removing usages of <code class="language-plaintext highlighter-rouge">Address</code>. Functions like <code class="language-plaintext highlighter-rouge">ParserUtil#parseAddress()</code> can be safely removed but its usages must be removed as well. Other usages like in <code class="language-plaintext highlighter-rouge">EditStudentDescriptor</code> may require more careful inspection.</p>
+
+<p>Let’s try removing references to <code class="language-plaintext highlighter-rouge">Address</code> in <code class="language-plaintext highlighter-rouge">EditStudentDescriptor</code>.</p>
+
+<ol>
+  <li>
+    <p>Safe delete the field <code class="language-plaintext highlighter-rouge">address</code> in <code class="language-plaintext highlighter-rouge">EditStudentDescriptor</code>.</p>
+  </li>
+  <li>
+    <p>Select <code class="language-plaintext highlighter-rouge">Yes</code> when prompted to remove getters and setters.</p>
+  </li>
+  <li>
+    <p>Select <code class="language-plaintext highlighter-rouge">View Usages</code> again.<br />
+<img src="../images/remove/UnsafeDeleteOnField.png" alt="UnsafeDeleteOnField" /></p>
+  </li>
+  <li>
+    <p>Remove the usages of <code class="language-plaintext highlighter-rouge">address</code> and select <code class="language-plaintext highlighter-rouge">Do refactor</code> when you are done.</p>
+
+    <div class="alert alert-primary">
+
+:bulb: <strong>Tip:</strong> Removing usages may result in errors. Exercise discretion and fix them. For example, removing the <code class="language-plaintext highlighter-rouge">address</code> field from the <code class="language-plaintext highlighter-rouge">Student</code> class will require you to modify its constructor.
+</div>
+  </li>
+  <li>
+    <p>Repeat the steps for the remaining usages of <code class="language-plaintext highlighter-rouge">Address</code></p>
+  </li>
+</ol>
+
+<p>After you are done, verify that the application still works by compiling and running it again.</p>
+
+<h3 id="manual-refactoring">Manual refactoring</h3>
+
+<p>Unfortunately, there are usages of <code class="language-plaintext highlighter-rouge">Address</code> that IntelliJ IDEA cannot identify. You can find them by searching for instances of the word <code class="language-plaintext highlighter-rouge">address</code> in your code (<code class="language-plaintext highlighter-rouge">Edit</code> &gt; <code class="language-plaintext highlighter-rouge">Find</code> &gt; <code class="language-plaintext highlighter-rouge">Find in path</code>).</p>
+
+<p>Places of interest to look out for would be resources used by the application. <code class="language-plaintext highlighter-rouge">main/resources</code> contains images and <code class="language-plaintext highlighter-rouge">fxml</code> files used by the application and <code class="language-plaintext highlighter-rouge">test/resources</code> contains test data. For example, there is a <code class="language-plaintext highlighter-rouge">$address</code> in each <code class="language-plaintext highlighter-rouge">StudentCard</code> that has not been removed nor identified.</p>
+
+<p><img src="../images/remove/$address.png" alt="$address" /></p>
+
+<p>A quick look at the <code class="language-plaintext highlighter-rouge">StudentCard</code> class and its <code class="language-plaintext highlighter-rouge">fxml</code> file quickly reveals why it slipped past the automated refactoring.</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">StudentCard.java</code></strong></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">...</span>
+<span class="nd">@FXML</span>
+<span class="kd">private</span> <span class="nc">Label</span> <span class="n">address</span><span class="o">;</span>
+<span class="o">...</span>
+</code></pre></div></div>
+
+<p><strong><code class="language-plaintext highlighter-rouge">StudentCard.fxml</code></strong></p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>...
+<span class="nt">&lt;Label</span> <span class="na">fx:id=</span><span class="s">"phone"</span> <span class="na">styleClass=</span><span class="s">"cell_small_label"</span> <span class="na">text=</span><span class="s">"\$phone"</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;Label</span> <span class="na">fx:id=</span><span class="s">"address"</span> <span class="na">styleClass=</span><span class="s">"cell_small_label"</span> <span class="na">text=</span><span class="s">"\$address"</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;Label</span> <span class="na">fx:id=</span><span class="s">"email"</span> <span class="na">styleClass=</span><span class="s">"cell_small_label"</span> <span class="na">text=</span><span class="s">"\$email"</span> <span class="nt">/&gt;</span>
+...
+</code></pre></div></div>
+
+<p>After removing the <code class="language-plaintext highlighter-rouge">Label</code>, we can proceed to formally test our code. If everything went well, you should have most of your tests pass. Fix any remaining errors until the tests all pass.</p>
+
+<h2 id="tidying-up">Tidying up</h2>
+
+<p>At this point, your application is working as intended and all your tests are passing. What’s left to do is to clean up references to <code class="language-plaintext highlighter-rouge">Address</code> in test data and documentation.</p>
+
+<p>In <code class="language-plaintext highlighter-rouge">src/test/data/</code>, data meant for testing purposes are stored. While keeping the <code class="language-plaintext highlighter-rouge">address</code> field in the json files does not cause the tests to fail, it is not good practice to let cruft from old features accumulate.</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">invalidStudentAddressBook.json</code>:</strong></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"students"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Student with invalid name field: Ha!ns Mu@ster"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9482424"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hans@example.com"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4th street"</span><span class="w">
+  </span><span class="p">}</span><span class="w"> </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>You can go through each individual <code class="language-plaintext highlighter-rouge">json</code> file and manually remove the <code class="language-plaintext highlighter-rouge">address</code> field.</p>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StarCommand.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tp</a> &gt; <a href="index.source.html" class="el_package">seedu.address.logic.commands</a> &gt; <span class="el_source">StarCommand.java</span></div><h1>StarCommand.java</h1><pre class="source lang-java linenums">package seedu.address.logic.commands;
+
+import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_STAR;
+
+import java.util.List;
+
+import seedu.address.commons.core.index.Index;
+import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.logic.Messages;
+import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.model.Model;
+import seedu.address.model.student.Star;
+import seedu.address.model.student.Student;
+
+/**
+ * Adds a star to a student in the address book.
+ * @code star 1 s/3
+ */
+public class StarCommand extends Command {
+
+    public static final String COMMAND_WORD = &quot;star&quot;;
+
+<span class="fc" id="L24">    public static final String MESSAGE_USAGE = COMMAND_WORD + &quot;: Edits the remark of the student identified &quot;</span>
+            + &quot;by the index number used in the last student listing. &quot;
+            + &quot;Existing remark will be overwritten by the input.\n&quot;
+            + &quot;Parameters: INDEX (must be a positive integer) &quot;
+            + PREFIX_STAR + &quot;[STAR]\n&quot;
+            + &quot;Example: &quot; + COMMAND_WORD + &quot; 1 &quot;
+            + PREFIX_STAR + &quot;3&quot;;
+
+    public static final String MESSAGE_ADD_STAR_SUCCESS = &quot;Added stars to Student: %1$s&quot;;
+
+    private final Index index; // Index to give star
+    private final Star star; // Number of stars given
+
+    /**
+     * @param index of the student in the filtered student list to give the star.
+     * @param star number of stars given to student.
+     */
+<span class="fc" id="L41">    public StarCommand(Index index, Star star) {</span>
+<span class="fc" id="L42">        requireNonNull(index);</span>
+<span class="fc" id="L43">        requireNonNull(star);</span>
+<span class="fc" id="L44">        this.index = index;</span>
+<span class="fc" id="L45">        this.star = star;</span>
+<span class="fc" id="L46">    }</span>
+
+    @Override
+    public CommandResult execute(Model model) throws CommandException { // executes the starring
+<span class="fc" id="L50">        List&lt;Student&gt; lastShownList = model.getCorrectStudentList(); // get the list of students</span>
+
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        if (index.getZeroBased() &gt;= lastShownList.size()) { // if index out of range</span>
+<span class="fc" id="L53">            throw new CommandException(Messages.MESSAGE_INVALID_STUDENT_DISPLAYED_INDEX);</span>
+        }
+
+<span class="fc" id="L56">        Student studentToEdit = lastShownList.get(index.getZeroBased()); // get Student indexed</span>
+<span class="fc" id="L57">        Star starToEdit = studentToEdit.getStar(); // return the stars</span>
+<span class="fc" id="L58">        Star edittedStar = new Star(starToEdit.numOfStars + this.star.numOfStars); // new Star to be added</span>
+
+<span class="fc" id="L60">        Student editedStudent = new Student(</span>
+<span class="fc" id="L61">                studentToEdit.getName(), studentToEdit.getPhone(), studentToEdit.getEmail(),</span>
+<span class="fc" id="L62">                studentToEdit.getMajor(), edittedStar, studentToEdit.getBolt(), studentToEdit.getTags());</span>
+
+<span class="fc" id="L64">        model.setStudent(studentToEdit, editedStudent);</span>
+<span class="fc" id="L65">        model.updateFilteredStudentList(Model.PREDICATE_SHOW_ALL_STUDENTS);</span>
+<span class="fc" id="L66">        return new CommandResult(String.format(MESSAGE_ADD_STAR_SUCCESS, Messages.format(editedStudent)));</span>
+    }
+
+    @Override
+    public boolean equals(Object other) {
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        if (other == this) {</span>
+<span class="fc" id="L72">            return true;</span>
+        }
+
+        // instanceof handles nulls
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        if (!(other instanceof StarCommand)) {</span>
+<span class="fc" id="L77">            return false;</span>
+        }
+
+<span class="fc" id="L80">        StarCommand e = (StarCommand) other;</span>
+<span class="fc" id="L81">        return index.equals(e.index);</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L86">        return new ToStringBuilder(this)</span>
+<span class="nc" id="L87">                .add(&quot;index&quot;, this.index)</span>
+<span class="nc" id="L88">                .add(&quot;star&quot;, this.star)</span>
+<span class="nc" id="L89">                .toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

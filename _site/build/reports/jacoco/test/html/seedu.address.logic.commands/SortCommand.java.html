@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SortCommand.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tp</a> &gt; <a href="index.source.html" class="el_package">seedu.address.logic.commands</a> &gt; <span class="el_source">SortCommand.java</span></div><h1>SortCommand.java</h1><pre class="source lang-java linenums">package seedu.address.logic.commands;
+
+import static java.util.Objects.requireNonNull;
+
+import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.model.Model;
+
+/**
+ * Sorts all students in the address book based on any given field
+ */
+public class SortCommand extends Command {
+
+    public static final String COMMAND_WORD = &quot;sort&quot;;
+    public static final String MESSAGE_SUCCESS = &quot;Sorted all persons by %s in %s order.&quot;;
+    public static final String MESSAGE_USAGE = COMMAND_WORD + &quot;: sorts all students in the address book &quot;
+            + &quot;based on any given field (case-insensitive) of the student in either ascending or descending order&quot;
+            + &quot;Parameters: &lt;Field&gt;(email, major, name, phone, star) &lt;asc/desc&gt; \n&quot;
+            + &quot;Example: &quot; + COMMAND_WORD + &quot; name&quot; + &quot; asc&quot;;
+    private String field;
+    private boolean isAscending;
+
+    /**
+     * Creates a SortCommand to sort students by field {@code field}
+     * in either ascending or descending order {@code isAscending}
+     * @param field The field in persons that is being used for sorting
+     * @param isAscending A boolean flag for the sort if its ascending or descending
+     */
+<span class="fc" id="L28">    public SortCommand(String field, boolean isAscending) {</span>
+<span class="fc" id="L29">        this.field = field.toLowerCase();</span>
+<span class="fc" id="L30">        this.isAscending = isAscending;</span>
+<span class="fc" id="L31">    }</span>
+
+    @Override
+    public CommandResult execute(Model model) {
+<span class="fc" id="L35">        requireNonNull(model);</span>
+<span class="fc" id="L36">        model.updateSortedStudentListByField(field, isAscending);</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">        return new CommandResult(String.format(MESSAGE_SUCCESS, field, isAscending ? &quot;ascending&quot; : &quot;descending&quot;));</span>
+    }
+
+    @Override
+    public boolean equals(Object other) {
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        if (other == this) {</span>
+<span class="fc" id="L43">            return true;</span>
+        }
+
+        // instanceof handles nulls
+<span class="fc bfc" id="L47" title="All 2 branches covered.">        if (!(other instanceof SortCommand)) {</span>
+<span class="fc" id="L48">            return false;</span>
+        }
+
+<span class="fc" id="L51">        SortCommand otherSortCommand = (SortCommand) other;</span>
+<span class="pc bpc" id="L52" title="1 of 4 branches missed.">        return field.equals(otherSortCommand.field) &amp;&amp; isAscending == otherSortCommand.isAscending;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L57">        return new ToStringBuilder(this)</span>
+<span class="fc" id="L58">                .add(&quot;field&quot;, field)</span>
+<span class="fc" id="L59">                .add(&quot;isAscending&quot;, isAscending)</span>
+<span class="fc" id="L60">                .toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="seedu.address.model.tag.TagTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2024-04-03T09:48:36" hostname="evelyns-air-3.lan" time="0.002">
+  <properties/>
+  <testcase name="constructor_invalidTagName_throwsIllegalArgumentException()" classname="seedu.address.model.tag.TagTest" time="0.001"/>
+  <testcase name="constructor_null_throwsNullPointerException()" classname="seedu.address.model.tag.TagTest" time="0.001"/>
+  <testcase name="isValidTagName()" classname="seedu.address.model.tag.TagTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

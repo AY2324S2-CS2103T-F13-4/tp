@@ -1,0 +1,353 @@
+<blockquote>
+  <p>Indeed, the ratio of time spent reading versus writing is well over 10 to 1. We are constantly reading old code as part of the effort to write new code. …​[Therefore,] making it easy to read makes it easier to write.</p>
+
+  <p>—  Robert C. Martin Clean Code: A Handbook of Agile Software Craftsmanship</p>
+</blockquote>
+
+<p>When trying to understand an unfamiliar code base, one common strategy used is to trace some representative execution path through the code base. One easy way to trace an execution path is to use a debugger to step through the code. In this tutorial, you will be using the IntelliJ IDEA’s debugger to trace the execution path of a specific user command.</p>
+
+<ul id="markdown-toc">
+  <li><a href="#before-we-start" id="markdown-toc-before-we-start">Before we start</a></li>
+  <li><a href="#setting-a-breakpoint" id="markdown-toc-setting-a-breakpoint">Setting a breakpoint</a></li>
+  <li><a href="#tracing-the-execution-path" id="markdown-toc-tracing-the-execution-path">Tracing the execution path</a></li>
+  <li><a href="#conclusion" id="markdown-toc-conclusion">Conclusion</a></li>
+</ul>
+
+<h2 id="before-we-start">Before we start</h2>
+
+<p>Before we jump into the code, it is useful to get an idea of the overall structure and the high-level behavior of the application. This is provided in the ‘Architecture’ section of the developer guide. In particular, the architecture diagram (reproduced below), tells us that the App consists of several components.</p>
+
+<p><img src="../images/ArchitectureDiagram.png" alt="ArchitectureDiagram" /></p>
+
+<p>It also has a sequence diagram (reproduced below) that tells us how a command propagates through the App.</p>
+
+<p><img src="../images/ArchitectureSequenceDiagram.png" width="550" /></p>
+
+<p>Note how the diagram shows only the execution flows <em>between</em> the main components. That is, it does not show details of the execution path <em>inside</em> each component. By hiding those details, the diagram aims to inform the reader about the overall execution path of a command without overwhelming the reader with too much details. In this tutorial, you aim to find those omitted details so that you get a more in-depth understanding of how the code works.</p>
+
+<p>Before we proceed, ensure that you have done the following:</p>
+<ol>
+  <li>Read the <a href="../DeveloperGuide.md#architecture"><em>Architecture</em> section of the DG</a></li>
+  <li>Set up the project in Intellij IDEA</li>
+  <li>Learn basic debugging features of Intellij IDEA
+    <ul>
+      <li>If you are using a different IDE, we’ll leave it to you to figure out the equivalent feature to use in your IDE.</li>
+      <li>If you are not using an IDE, we’ll let you figure out how to achieve the same using your coding toolchain.</li>
+    </ul>
+  </li>
+</ol>
+
+<h2 id="setting-a-breakpoint">Setting a breakpoint</h2>
+
+<p>As you know, the first step of debugging is to put in a breakpoint where you want the debugger to pause the execution. For example, if you are trying to understand how the App starts up, you would put a breakpoint in the first statement of the <code class="language-plaintext highlighter-rouge">main</code> method.</p>
+
+<p>In our case, we would want to begin the tracing at the very point where the App start processing user input (i.e., somewhere in the UI component), and then trace through how the execution proceeds through the UI component. However, the execution path through a GUI is often somewhat obscure due to various <em>event-driven mechanisms</em> used by GUI frameworks, which happens to be the case here too. Therefore, let us put the breakpoint where the <code class="language-plaintext highlighter-rouge">UI</code> transfers control to the <code class="language-plaintext highlighter-rouge">Logic</code> component.</p>
+
+<p><img src="../images/ArchitectureSequenceDiagram.png" width="550" /></p>
+
+<p>According to the sequence diagram you saw earlier (and repeated above for reference), the <code class="language-plaintext highlighter-rouge">UI</code> component yields control to the <code class="language-plaintext highlighter-rouge">Logic</code> component through a method named <code class="language-plaintext highlighter-rouge">execute</code>. Searching through the code base for an <code class="language-plaintext highlighter-rouge">execute()</code> method that belongs to the <code class="language-plaintext highlighter-rouge">Logic</code> component yields a promising candidate in <code class="language-plaintext highlighter-rouge">seedu.address.logic.Logic</code>.</p>
+
+<p><img src="../images/tracing/searchResultsForExecuteMethod.png" /></p>
+
+<div class="alert alert-primary">
+
+:bulb: <strong>Intellij Tip:</strong> The <a href="https://www.jetbrains.com/help/idea/searching-everywhere.html">‘<strong>Search Everywhere</strong>’ feature</a> can be used here. In particular, the ‘<strong>Find Symbol</strong>’ (‘Symbol’ here refers to methods, variables, classes etc.) variant of that feature is quite useful here as we are looking for a <em>method</em> named <code class="language-plaintext highlighter-rouge">execute</code>, not simply the text <code class="language-plaintext highlighter-rouge">execute</code>.
+</div>
+
+<p>A quick look at the <code class="language-plaintext highlighter-rouge">seedu.address.logic.Logic</code> (an extract given below) confirms that this indeed might be what we’re looking for.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Logic</span> <span class="o">{</span>
+    <span class="cm">/**
+     * Executes the command and returns the result.
+     * @param commandText The command as entered by the user.
+     * @return the result of the command execution.
+     * @throws CommandException If an error occurs during command execution.
+     * @throws ParseException If an error occurs during parsing.
+     */</span>
+    <span class="nc">CommandResult</span> <span class="nf">execute</span><span class="o">(</span><span class="nc">String</span> <span class="n">commandText</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">CommandException</span><span class="o">,</span> <span class="nc">ParseException</span><span class="o">;</span>
+<span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>But apparently, this is an interface, not a concrete implementation.
+That should be fine because the <a href="../DeveloperGuide.html#architecture">Architecture section of the Developer Guide</a> tells us that components interact through interfaces. Here’s the relevant diagram:</p>
+
+<p><img src="../images/ComponentManagers.png" width="300" /></p>
+
+<p>Next, let’s find out which statement(s) in the <code class="language-plaintext highlighter-rouge">UI</code> code is calling this method, thus transferring control from the <code class="language-plaintext highlighter-rouge">UI</code> to the <code class="language-plaintext highlighter-rouge">Logic</code>.</p>
+
+<div class="alert alert-primary">
+
+:bulb: <strong>Intellij Tip:</strong> The <a href="https://www.jetbrains.com/help/idea/find-highlight-usages.html#find-usages">‘<strong>Find Usages</strong>’ feature</a> can find from which parts of the code a class/method/variable is being used.
+</div>
+
+<p><img src="../images/tracing/FindUsages.png" alt="`Find Usages` tool window. `Edit` &gt; `Find` &gt; `Find Usages`." /></p>
+
+<p>Bingo! <code class="language-plaintext highlighter-rouge">MainWindow#executeCommand()</code> seems to be exactly what we’re looking for!</p>
+
+<p>Now let’s set the breakpoint. First, double-click the item to reach the corresponding code. Once there, click on the left gutter to set a breakpoint, as shown below.
+ <img src="../images/tracing/LeftGutter.png" alt="LeftGutter" /></p>
+
+<h2 id="tracing-the-execution-path">Tracing the execution path</h2>
+
+<p>Recall from the User Guide that the <code class="language-plaintext highlighter-rouge">edit</code> command has the format: <code class="language-plaintext highlighter-rouge">edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​</code> For this tutorial we will be issuing the command <code class="language-plaintext highlighter-rouge">edit 1 n/Alice Yeoh</code>.</p>
+
+<div class="alert alert-primary">
+
+:bulb: <strong>Tip:</strong> Over the course of the debugging session, you will encounter every major component in the application. Try to keep track of what happens inside the component and where the execution transfers to another component.
+</div>
+
+<ol>
+  <li>
+    <p>To start the debugging session, simply <code class="language-plaintext highlighter-rouge">Run</code> &gt; <code class="language-plaintext highlighter-rouge">Debug Main</code></p>
+  </li>
+  <li>
+    <p>When the GUI appears, enter <code class="language-plaintext highlighter-rouge">edit 1 n/Alice Yeoh</code> into the command box and press <code class="language-plaintext highlighter-rouge">Enter</code>.</p>
+  </li>
+  <li>
+    <p>The Debugger tool window should show up and show something like this:<br />
+<img src="../images/tracing/DebuggerStep1.png" alt="DebuggerStep1" /></p>
+  </li>
+  <li>
+    <p>Use the <em>Show execution point</em> feature to jump to the line of code that we stopped at:<br />
+<img src="../images/tracing/ShowExecutionPoint.png" alt="ShowExecutionPoint" /><br />
+<code class="language-plaintext highlighter-rouge">CommandResult commandResult = logic.execute(commandText);</code> is the line that you end up at (i.e., the place where we put the breakpoint).</p>
+  </li>
+  <li>
+    <p>We are interested in the <code class="language-plaintext highlighter-rouge">logic.execute(commandText)</code> portion of that line so let’s <em>Step in</em> into that method call:<br />
+ <img src="../images/tracing/StepInto.png" alt="StepInto" /></p>
+  </li>
+  <li>
+    <p>We end up in <code class="language-plaintext highlighter-rouge">LogicManager#execute()</code> (not <code class="language-plaintext highlighter-rouge">Logic#execute</code> – but this is expected because we know the <code class="language-plaintext highlighter-rouge">execute()</code> method in the <code class="language-plaintext highlighter-rouge">Logic</code> interface is actually implemented by the <code class="language-plaintext highlighter-rouge">LogicManager</code> class). Let’s take a look at the body of the method. Given below is the same code, with additional explanatory comments.</p>
+
+    <p><strong>LogicManager#execute().</strong></p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="nc">CommandResult</span> <span class="nf">execute</span><span class="o">(</span><span class="nc">String</span> <span class="n">commandText</span><span class="o">)</span>
+        <span class="kd">throws</span> <span class="nc">CommandException</span><span class="o">,</span> <span class="nc">ParseException</span> <span class="o">{</span>
+
+     <span class="c1">//Logging, safe to ignore</span>
+     <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"----------------[USER COMMAND]["</span> <span class="o">+</span> <span class="n">commandText</span> <span class="o">+</span> <span class="s">"]"</span><span class="o">);</span>
+
+     <span class="nc">CommandResult</span> <span class="n">commandResult</span><span class="o">;</span>
+     <span class="c1">//Parse user input from String to a Command</span>
+     <span class="nc">Command</span> <span class="n">command</span> <span class="o">=</span> <span class="n">addressBookParser</span><span class="o">.</span><span class="na">parseCommand</span><span class="o">(</span><span class="n">commandText</span><span class="o">);</span>
+     <span class="c1">//Executes the Command and stores the result</span>
+     <span class="n">commandResult</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="n">model</span><span class="o">);</span>
+
+     <span class="k">try</span> <span class="o">{</span>
+         <span class="c1">//We can deduce that the previous line of code modifies model in some way</span>
+         <span class="c1">// since it's being stored here.</span>
+         <span class="n">storage</span><span class="o">.</span><span class="na">saveAddressBook</span><span class="o">(</span><span class="n">model</span><span class="o">.</span><span class="na">getAddressBook</span><span class="o">());</span>
+     <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">IOException</span> <span class="n">ioe</span><span class="o">)</span> <span class="o">{</span>
+         <span class="k">throw</span> <span class="k">new</span> <span class="nf">CommandException</span><span class="o">(</span><span class="no">FILE_OPS_ERROR_MESSAGE</span> <span class="o">+</span> <span class="n">ioe</span><span class="o">,</span> <span class="n">ioe</span><span class="o">);</span>
+     <span class="o">}</span>
+
+     <span class="k">return</span> <span class="n">commandResult</span><span class="o">;</span>
+ <span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">LogicManager#execute()</code> appears to delegate most of the heavy lifting to other components. Let’s take a closer look at each one.</p>
+  </li>
+  <li>
+    <p><em>Step over</em> the logging code since it is of no interest to us now.
+<img src="../images/tracing/StepOver.png" alt="StepOver" /></p>
+  </li>
+  <li><em>Step into</em> the line where user input in parsed from a String to a Command, which should bring you to the <code class="language-plaintext highlighter-rouge">AddressBookParser#parseCommand()</code> method (partial code given below):
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nc">Command</span> <span class="nf">parseCommand</span><span class="o">(</span><span class="nc">String</span> <span class="n">userInput</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">ParseException</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="kd">final</span> <span class="nc">String</span> <span class="n">commandWord</span> <span class="o">=</span> <span class="n">matcher</span><span class="o">.</span><span class="na">group</span><span class="o">(</span><span class="s">"commandWord"</span><span class="o">);</span>
+    <span class="kd">final</span> <span class="nc">String</span> <span class="n">arguments</span> <span class="o">=</span> <span class="n">matcher</span><span class="o">.</span><span class="na">group</span><span class="o">(</span><span class="s">"arguments"</span><span class="o">);</span>
+    <span class="o">...</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><em>Step over</em> the statements in that method until you reach the <code class="language-plaintext highlighter-rouge">switch</code> statement. The ‘Variables’ window now shows the value of both <code class="language-plaintext highlighter-rouge">commandWord</code> and <code class="language-plaintext highlighter-rouge">arguments</code>:<br />
+ <img src="../images/tracing/Variables.png" alt="Variables" /></p>
+  </li>
+  <li>
+    <p>We see that the value of <code class="language-plaintext highlighter-rouge">commandWord</code> is now <code class="language-plaintext highlighter-rouge">edit</code> but <code class="language-plaintext highlighter-rouge">arguments</code> is still not processed in any meaningful way.</p>
+  </li>
+  <li>
+    <p>Stepping through the <code class="language-plaintext highlighter-rouge">switch</code> block, we end up at a call to <code class="language-plaintext highlighter-rouge">EditCommandParser().parse()</code> as expected (because the command we typed is an edit command).</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="o">...</span>
+ <span class="k">case</span> <span class="nc">EditCommand</span><span class="o">.</span><span class="na">COMMAND_WORD</span><span class="o">:</span>
+     <span class="k">return</span> <span class="k">new</span> <span class="nf">EditCommandParser</span><span class="o">().</span><span class="na">parse</span><span class="o">(</span><span class="n">arguments</span><span class="o">);</span>
+ <span class="o">...</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Let’s see what <code class="language-plaintext highlighter-rouge">EditCommandParser#parse()</code> does by stepping into it. You might have to click the ‘step into’ button multiple times here because there are two method calls in that statement: <code class="language-plaintext highlighter-rouge">EditCommandParser()</code> and <code class="language-plaintext highlighter-rouge">parse()</code>.</p>
+
+    <div class="alert alert-primary">:bulb: <strong>Intellij Tip:</strong> Sometimes, you might end up stepping into functions that are not of interest. Simply use the <code class="language-plaintext highlighter-rouge">step out</code> button to get out of them!
+</div>
+  </li>
+  <li>
+    <p>Stepping through the method shows that it calls <code class="language-plaintext highlighter-rouge">ArgumentTokenizer#tokenize()</code> and <code class="language-plaintext highlighter-rouge">ParserUtil#parseIndex()</code> to obtain the arguments and index required.</p>
+  </li>
+  <li>
+    <p>The rest of the method seems to exhaustively check for the existence of each possible parameter of the <code class="language-plaintext highlighter-rouge">edit</code> command and store any possible changes in an <code class="language-plaintext highlighter-rouge">EditStudentDescriptor</code>. Recall that we can verify the contents of <code class="language-plaintext highlighter-rouge">editStudentDesciptor</code> through the ‘Variables’ window.<br />
+<img src="../images/tracing/EditCommand.png" alt="EditCommand" /></p>
+  </li>
+  <li>
+    <p>As you just traced through some code involved in parsing a command, you can take a look at this class diagram to see where the various parsing-related classes you encountered fit into the design of the <code class="language-plaintext highlighter-rouge">Logic</code> component.
+<img src="../images/ParserClasses.png" width="600" /></p>
+  </li>
+  <li>
+    <p>Let’s continue stepping through until we return to <code class="language-plaintext highlighter-rouge">LogicManager#execute()</code>.</p>
+
+    <p>The sequence diagram below shows the details of the execution path through the Logic component. Does the execution path you traced in the code so far match the diagram?<br />
+ <img src="../images/tracing/LogicSequenceDiagram.png" alt="Tracing an `edit` command through the Logic component" /></p>
+  </li>
+  <li>
+    <p>Now, step over until you read the statement that calls the <code class="language-plaintext highlighter-rouge">execute()</code> method of the <code class="language-plaintext highlighter-rouge">EditCommand</code> object received, and step into that <code class="language-plaintext highlighter-rouge">execute()</code> method (partial code given below):</p>
+
+    <p><strong><code class="language-plaintext highlighter-rouge">EditCommand#execute()</code>:</strong></p>
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="nc">CommandResult</span> <span class="nf">execute</span><span class="o">(</span><span class="nc">Model</span> <span class="n">model</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">CommandException</span> <span class="o">{</span>
+    <span class="o">...</span>
+    <span class="nc">Student</span> <span class="n">studentToEdit</span> <span class="o">=</span> <span class="n">lastShownList</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">index</span><span class="o">.</span><span class="na">getZeroBased</span><span class="o">());</span>
+    <span class="nc">Student</span> <span class="n">editedStudent</span> <span class="o">=</span> <span class="n">createEditedStudent</span><span class="o">(</span><span class="n">studentToEdit</span><span class="o">,</span> <span class="n">editStudentDescriptor</span><span class="o">);</span>
+    <span class="k">if</span> <span class="o">(!</span><span class="n">studentToEdit</span><span class="o">.</span><span class="na">isSameStudent</span><span class="o">(</span><span class="n">editedStudent</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">model</span><span class="o">.</span><span class="na">hasStudent</span><span class="o">(</span><span class="n">editedStudent</span><span class="o">))</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">CommandException</span><span class="o">(</span><span class="no">MESSAGE_DUPLICATE_STUDENT</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">setStudent</span><span class="o">(</span><span class="n">studentToEdit</span><span class="o">,</span> <span class="n">editedStudent</span><span class="o">);</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">updateFilteredStudentList</span><span class="o">(</span><span class="no">PREDICATE_SHOW_ALL_STUDENTS</span><span class="o">);</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">CommandResult</span><span class="o">(</span><span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="no">MESSAGE_EDIT_STUDENT_SUCCESS</span><span class="o">,</span> <span class="n">editedStudent</span><span class="o">));</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>As suspected, <code class="language-plaintext highlighter-rouge">command#execute()</code> does indeed make changes to the <code class="language-plaintext highlighter-rouge">model</code> object. Specifically,
+    <ul>
+      <li>it uses the <code class="language-plaintext highlighter-rouge">setStudent()</code> method (defined in the interface <code class="language-plaintext highlighter-rouge">Model</code> and implemented in <code class="language-plaintext highlighter-rouge">ModelManager</code> as per the usual pattern) to update the student data.</li>
+      <li>it uses the <code class="language-plaintext highlighter-rouge">updateFilteredStudentList</code> method to ask the <code class="language-plaintext highlighter-rouge">Model</code> to populate the ‘filtered list’ with <em>all</em> students.<br />
+FYI, The ‘filtered list’ is the list of students resulting from the most recent operation that will be shown to the user immediately after. For the <code class="language-plaintext highlighter-rouge">edit</code> command, we populate it with all the students so that the user can see the edited student along with all other students. If this was a <code class="language-plaintext highlighter-rouge">find</code> command, we would be setting that list to contain the search results instead.<br />
+To provide some context, given below is the class diagram of the <code class="language-plaintext highlighter-rouge">Model</code> component. See if you can figure out where the ‘filtered list’ of students is being tracked.
+<img src="../images/ModelClassDiagram.png" width="450" /><br /></li>
+      <li>:bulb: This may be a good time to read through the <a href="../DeveloperGuide.html#model-component"><code class="language-plaintext highlighter-rouge">Model</code> component section of the DG</a></li>
+    </ul>
+  </li>
+  <li>
+    <p>As you step through the rest of the statements in the <code class="language-plaintext highlighter-rouge">EditCommand#execute()</code> method, you’ll see that it creates a <code class="language-plaintext highlighter-rouge">CommandResult</code> object (containing information about the result of the execution) and returns it.<br />
+Advancing the debugger by one more step should take you back to the middle of the <code class="language-plaintext highlighter-rouge">LogicManager#execute()</code> method.<br /></p>
+  </li>
+  <li>Given that you have already seen quite a few classes in the <code class="language-plaintext highlighter-rouge">Logic</code> component in action, see if you can identify in this partial class diagram some of the classes you’ve encountered so far, and see how they fit into the class structure of the <code class="language-plaintext highlighter-rouge">Logic</code> component:
+ <img src="../images/LogicClassDiagram.png" width="550" />
+    <ul>
+      <li>:bulb: This may be a good time to read through the <a href="../DeveloperGuide.html#logic-component"><code class="language-plaintext highlighter-rouge">Logic</code> component section of the DG</a></li>
+    </ul>
+  </li>
+  <li>
+    <p>Similar to before, you can step over/into statements in the <code class="language-plaintext highlighter-rouge">LogicManager#execute()</code> method to examine how the control is transferred to the <code class="language-plaintext highlighter-rouge">Storage</code> component and what happens inside that component.</p>
+
+    <div class="alert alert-primary">:bulb: <strong>Intellij Tip:</strong> When trying to step into a statement such as <code class="language-plaintext highlighter-rouge">storage.saveAddressBook(model.getAddressBook())</code> which contains multiple method calls, Intellij will let you choose (by clicking) which one you want to step into.
+</div>
+  </li>
+  <li>
+    <p>As you step through the code inside the <code class="language-plaintext highlighter-rouge">Storage</code> component, you will eventually arrive at the <code class="language-plaintext highlighter-rouge">JsonAddressBook#saveAddressBook()</code> method which calls the <code class="language-plaintext highlighter-rouge">JsonSerializableAddressBook</code> constructor, to create an object that can be <em>serialized</em> (i.e., stored in storage medium) in JSON format. That constructor is given below (with added line breaks for easier readability):</p>
+
+    <p><strong><code class="language-plaintext highlighter-rouge">JsonSerializableAddressBook</code> constructor:</strong></p>
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * Converts a given {@code ReadOnlyAddressBook} into this class for Jackson use.
+ *
+ * @param source future changes to this will not affect the created
+ * {@code JsonSerializableAddressBook}.
+ */</span>
+<span class="kd">public</span> <span class="nf">JsonSerializableAddressBook</span><span class="o">(</span><span class="nc">ReadOnlyAddressBook</span> <span class="n">source</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">students</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span>
+        <span class="n">source</span><span class="o">.</span><span class="na">getStudentList</span><span class="o">()</span>
+              <span class="o">.</span><span class="na">stream</span><span class="o">()</span>
+              <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="nl">JsonAdaptedStudent:</span><span class="o">:</span><span class="k">new</span><span class="o">)</span>
+              <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="nc">Collectors</span><span class="o">.</span><span class="na">toList</span><span class="o">()));</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>It appears that a <code class="language-plaintext highlighter-rouge">JsonAdaptedStudent</code> is created for each <code class="language-plaintext highlighter-rouge">Student</code> and then added to the <code class="language-plaintext highlighter-rouge">JsonSerializableAddressBook</code>.
+This is because regular Java objects need to go through an <em>adaptation</em> for them to be suitable to be saved in JSON format.</p>
+  </li>
+  <li>While you are stepping through the classes in the <code class="language-plaintext highlighter-rouge">Storage</code> component, here is the component’s class diagram to help you understand how those classes fit into the structure of the component.<br />
+<img src="../images/StorageClassDiagram.png" width="550" />
+    <ul>
+      <li>:bulb: This may be a good time to read through the <a href="../DeveloperGuide.html#storage-component"><code class="language-plaintext highlighter-rouge">Storage</code> component section of the DG</a></li>
+    </ul>
+  </li>
+  <li>
+    <p>We can continue to step through until you reach the end of the <code class="language-plaintext highlighter-rouge">LogicManager#execute()</code> method and return to the <code class="language-plaintext highlighter-rouge">MainWindow#executeCommand()</code> method (the place where we put the original breakpoint).</p>
+  </li>
+  <li>
+    <p>Stepping into <code class="language-plaintext highlighter-rouge">resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());</code>, we end up in:</p>
+
+    <p><strong><code class="language-plaintext highlighter-rouge">ResultDisplay#setFeedbackToUser()</code></strong></p>
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setFeedbackToUser</span><span class="o">(</span><span class="nc">String</span> <span class="n">feedbackToUser</span><span class="o">)</span> <span class="o">{</span>
+     <span class="n">requireNonNull</span><span class="o">(</span><span class="n">feedbackToUser</span><span class="o">);</span>
+     <span class="n">resultDisplay</span><span class="o">.</span><span class="na">setText</span><span class="o">(</span><span class="n">feedbackToUser</span><span class="o">);</span>
+ <span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Finally, you can step through until you reach the end of<code class="language-plaintext highlighter-rouge">MainWindow#executeCommand()</code>.<br />
+:bulb: This may be a good time to read through the <a href="../DeveloperGuide.html#ui-component"><code class="language-plaintext highlighter-rouge">UI</code> component section of the DG</a></li>
+</ol>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>In this tutorial, we traced a valid edit command from raw user input to the result being displayed to the user. From this tutorial, you learned more about how the various components work together to produce a response to a user command.</p>
+
+<p>Here are some quick questions you can try to answer based on your execution path tracing. In some cases, you can do further tracing for the given commands to find exactly what happens.</p>
+
+<ol>
+  <li>
+    <p>In this tutorial, we traced the “happy path” (i.e., no errors). What
+do you think will happen if we traced the following commands
+instead? What exceptions do you think will be thrown (if any), where
+will the exceptions be thrown and where will they be handled?</p>
+
+    <ol>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">redit 1 n/Alice Yu</code></p>
+      </li>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">edit 0 n/Alice Yu</code></p>
+      </li>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">edit 1 n/Alex Yeoh</code></p>
+      </li>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">edit 1</code></p>
+      </li>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">edit 1 n/アリス ユー</code></p>
+      </li>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">edit 1 t/one t/two t/three t/one</code></p>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>What components will you have to modify to perform the following
+enhancements to the application?</p>
+
+    <ol>
+      <li>
+        <p>Make command words case-insensitive</p>
+      </li>
+      <li>
+        <p>Allow <code class="language-plaintext highlighter-rouge">delete</code> to remove more than one index at a time</p>
+      </li>
+      <li>
+        <p>Save the address book in the CSV format instead</p>
+      </li>
+      <li>
+        <p>Add a new command</p>
+      </li>
+      <li>
+        <p>Add a new field to <code class="language-plaintext highlighter-rouge">Student</code></p>
+      </li>
+      <li>
+        <p>Add a new entity to the address book</p>
+      </li>
+    </ol>
+  </li>
+</ol>

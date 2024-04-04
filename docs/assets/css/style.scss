@@ -3,8 +3,9 @@
 ---
 
 @import
-  "minima/skins/{{ site.minima.skin | default: 'classic' }}",
-  "minima/initialize";
+  "../../_sass/admonition",
+  "../../_sass/minima/skins/{{ site.minima.skin | default: 'classic' }}",
+  "../../_sass/minima/initialize";
 
 .icon {
     height: 21px;

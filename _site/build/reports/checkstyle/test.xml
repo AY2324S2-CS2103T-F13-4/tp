@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="10.2">
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/AppParametersTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/commons/core/ConfigTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/commons/core/GuiSettingsTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/commons/core/VersionTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/commons/core/index/IndexTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/commons/util/AppUtilTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/commons/util/CollectionUtilTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/commons/util/ConfigUtilTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/commons/util/FileUtilTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/commons/util/JsonUtilTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/commons/util/StringUtilTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/logic/LogicManagerTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/logic/commands/AddCommandIntegrationTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/logic/commands/AddCommandTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/logic/commands/BoltCommandTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/logic/commands/ClearCommandTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/logic/commands/CommandResultTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/logic/commands/CommandTestUtil.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/logic/commands/DeleteCommandTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/logic/commands/EditCommandTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/logic/commands/EditStudentDescriptorTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/logic/commands/ExitCommandTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/logic/commands/FindCommandTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/logic/commands/HelpCommandTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/logic/commands/ListCommandTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/logic/commands/SortCommandTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/logic/commands/StarCommandTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/logic/parser/AddCommandParserTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/logic/parser/AddressBookParserTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/logic/parser/ArgumentTokenizerTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/logic/parser/BoltCommandParserTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/logic/parser/CommandParserTestUtil.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/logic/parser/DeleteCommandParserTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/logic/parser/EditCommandParserTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/logic/parser/FindCommandParserTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/logic/parser/ParserUtilTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/logic/parser/SortCommandParserTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/logic/parser/StarCommandParserTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/model/AddressBookTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/model/ModelManagerTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/model/UserPrefsTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/model/student/BoltTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/model/student/EmailTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/model/student/MajorTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/model/student/NameTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/model/student/PhoneTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/model/student/StarTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/model/student/StudentTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/model/student/UniqueStudentListTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/model/student/predicates/BoltWithinBoundsPredicateTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/model/student/predicates/MajorContainsSubStringPredicateTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/model/student/predicates/NameContainsKeywordsPredicateTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/model/student/predicates/StarWithinBoundsPredicateTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/model/tag/TagTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/storage/JsonAdaptedStudentTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/storage/JsonAddressBookStorageTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/storage/JsonSerializableAddressBookTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/storage/JsonUserPrefsStorageTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/storage/StorageManagerTest.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/testutil/AddressBookBuilder.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/testutil/Assert.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/testutil/EditStudentDescriptorBuilder.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/testutil/SerializableTestClass.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/testutil/StudentBuilder.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/testutil/StudentUtil.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/testutil/TestUtil.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/testutil/TypicalIndexes.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/testutil/TypicalStudents.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/ui/TestFxmlObject.java">
+</file>
+<file name="/Users/evedaktyl/Desktop/CS2103T/tp/src/test/java/seedu/address/ui/UiPartTest.java">
+</file>
+</checkstyle>

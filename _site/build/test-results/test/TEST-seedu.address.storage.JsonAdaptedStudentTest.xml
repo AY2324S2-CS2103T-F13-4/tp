@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="seedu.address.storage.JsonAdaptedStudentTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2024-04-03T09:48:36" hostname="evelyns-air-3.lan" time="0.011">
+  <properties/>
+  <testcase name="toModelType_nullEmail_throwsIllegalValueException()" classname="seedu.address.storage.JsonAdaptedStudentTest" time="0.001"/>
+  <testcase name="toModelType_validStudentDetails_returnsStudent()" classname="seedu.address.storage.JsonAdaptedStudentTest" time="0.001"/>
+  <testcase name="toModelType_invalidTags_throwsIllegalValueException()" classname="seedu.address.storage.JsonAdaptedStudentTest" time="0.001"/>
+  <testcase name="toModelType_nullName_throwsIllegalValueException()" classname="seedu.address.storage.JsonAdaptedStudentTest" time="0.001"/>
+  <testcase name="toModelType_invalidAddress_throwsIllegalValueException()" classname="seedu.address.storage.JsonAdaptedStudentTest" time="0.0"/>
+  <testcase name="toModelType_invalidPhone_throwsIllegalValueException()" classname="seedu.address.storage.JsonAdaptedStudentTest" time="0.0"/>
+  <testcase name="toModelType_invalidName_throwsIllegalValueException()" classname="seedu.address.storage.JsonAdaptedStudentTest" time="0.0"/>
+  <testcase name="toModelType_invalidEmail_throwsIllegalValueException()" classname="seedu.address.storage.JsonAdaptedStudentTest" time="0.0"/>
+  <testcase name="toModelType_nullAddress_throwsIllegalValueException()" classname="seedu.address.storage.JsonAdaptedStudentTest" time="0.001"/>
+  <testcase name="toModelType_nullPhone_throwsIllegalValueException()" classname="seedu.address.storage.JsonAdaptedStudentTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ModelManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tp</a> &gt; <a href="index.source.html" class="el_package">seedu.address.model</a> &gt; <span class="el_source">ModelManager.java</span></div><h1>ModelManager.java</h1><pre class="source lang-java linenums">package seedu.address.model;
+
+import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
+
+import java.nio.file.Path;
+import java.util.Comparator;
+import java.util.function.Predicate;
+import java.util.logging.Logger;
+
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
+import seedu.address.commons.core.GuiSettings;
+import seedu.address.commons.core.LogsCenter;
+import seedu.address.model.student.Student;
+
+/**
+ * Represents the in-memory model of the address book data.
+ */
+public class ModelManager implements Model {
+<span class="fc" id="L22">    private static final Logger logger = LogsCenter.getLogger(ModelManager.class);</span>
+
+    private final AddressBook addressBook;
+    private final UserPrefs userPrefs;
+    private final SortedList&lt;Student&gt; sortedStudents;
+    private final FilteredList&lt;Student&gt; filteredStudents;
+
+    /**
+     * Initializes a ModelManager with the given addressBook and userPrefs.
+     */
+<span class="fc" id="L32">    public ModelManager(ReadOnlyAddressBook addressBook, ReadOnlyUserPrefs userPrefs) {</span>
+<span class="fc" id="L33">        requireAllNonNull(addressBook, userPrefs);</span>
+
+<span class="fc" id="L35">        logger.fine(&quot;Initializing with address book: &quot; + addressBook + &quot; and user prefs &quot; + userPrefs);</span>
+
+<span class="fc" id="L37">        this.addressBook = new AddressBook(addressBook);</span>
+<span class="fc" id="L38">        this.userPrefs = new UserPrefs(userPrefs);</span>
+        //initially both lists would be the same as the default
+<span class="fc" id="L40">        filteredStudents = new FilteredList&lt;&gt;(this.addressBook.getStudentList());</span>
+<span class="fc" id="L41">        sortedStudents = new SortedList&lt;&gt;(filteredStudents);</span>
+<span class="fc" id="L42">    }</span>
+
+    public ModelManager() {
+<span class="fc" id="L45">        this(new AddressBook(), new UserPrefs());</span>
+<span class="fc" id="L46">    }</span>
+
+    //=========== UserPrefs ==================================================================================
+
+    @Override
+    public void setUserPrefs(ReadOnlyUserPrefs userPrefs) {
+<span class="fc" id="L52">        requireNonNull(userPrefs);</span>
+<span class="fc" id="L53">        this.userPrefs.resetData(userPrefs);</span>
+<span class="fc" id="L54">    }</span>
+
+    @Override
+    public ReadOnlyUserPrefs getUserPrefs() {
+<span class="fc" id="L58">        return userPrefs;</span>
+    }
+
+    @Override
+    public GuiSettings getGuiSettings() {
+<span class="fc" id="L63">        return userPrefs.getGuiSettings();</span>
+    }
+
+    @Override
+    public void setGuiSettings(GuiSettings guiSettings) {
+<span class="fc" id="L68">        requireNonNull(guiSettings);</span>
+<span class="fc" id="L69">        userPrefs.setGuiSettings(guiSettings);</span>
+<span class="fc" id="L70">    }</span>
+
+    @Override
+    public Path getAddressBookFilePath() {
+<span class="fc" id="L74">        return userPrefs.getAddressBookFilePath();</span>
+    }
+
+    @Override
+    public void setAddressBookFilePath(Path addressBookFilePath) {
+<span class="fc" id="L79">        requireNonNull(addressBookFilePath);</span>
+<span class="fc" id="L80">        userPrefs.setAddressBookFilePath(addressBookFilePath);</span>
+<span class="fc" id="L81">    }</span>
+
+    //=========== AddressBook ================================================================================
+
+    @Override
+    public void setAddressBook(ReadOnlyAddressBook addressBook) {
+<span class="fc" id="L87">        this.addressBook.resetData(addressBook);</span>
+<span class="fc" id="L88">    }</span>
+
+    @Override
+    public ReadOnlyAddressBook getAddressBook() {
+<span class="fc" id="L92">        return addressBook;</span>
+    }
+
+    @Override
+    public boolean hasStudent(Student student) {
+<span class="fc" id="L97">        requireNonNull(student);</span>
+<span class="fc" id="L98">        return addressBook.hasStudent(student);</span>
+    }
+
+    @Override
+    public void deleteStudent(Student target) {
+<span class="fc" id="L103">        addressBook.removeStudent(target);</span>
+<span class="fc" id="L104">    }</span>
+
+    @Override
+    public void addStudent(Student student) {
+<span class="fc" id="L108">        addressBook.addStudent(student);</span>
+<span class="fc" id="L109">        updateFilteredStudentList(PREDICATE_SHOW_ALL_STUDENTS);</span>
+<span class="fc" id="L110">    }</span>
+
+    @Override
+    public void setStudent(Student target, Student editedStudent) {
+<span class="fc" id="L114">        requireAllNonNull(target, editedStudent);</span>
+
+<span class="fc" id="L116">        addressBook.setStudent(target, editedStudent);</span>
+<span class="fc" id="L117">    }</span>
+
+    //=========== Filtered &amp; Sorted Student List Accessors =============================================================
+
+    /**
+     * Returns an unmodifiable view of the list of {@code Student} backed by the internal list of
+     * {@code versionedAddressBook}
+     */
+    @Override
+    public ObservableList&lt;Student&gt; getFilteredStudentList() {
+<span class="fc" id="L127">        return filteredStudents;</span>
+    }
+
+    @Override
+    public ObservableList&lt;Student&gt; getSortedStudentList() {
+<span class="nc" id="L132">        return sortedStudents;</span>
+    }
+
+    @Override
+    public void updateFilteredStudentList(Predicate&lt;Student&gt; predicate) {
+<span class="fc" id="L137">        requireNonNull(predicate);</span>
+<span class="fc" id="L138">        filteredStudents.setPredicate(predicate);</span>
+<span class="fc" id="L139">    }</span>
+    @Override
+    public void updateSortedStudentListByField(String field, boolean isAscending) {
+        Comparator&lt;Student&gt; comparator;
+<span class="pc bpc" id="L143" title="1 of 6 branches missed.">        switch (field.toLowerCase()) {</span>
+        case &quot;email&quot;:
+<span class="nc" id="L145">            comparator = Comparator.comparing(Student::getEmail);</span>
+<span class="nc" id="L146">            break;</span>
+        case &quot;major&quot;:
+<span class="fc" id="L148">            comparator = Comparator.comparing(Student::getMajor);</span>
+<span class="fc" id="L149">            break;</span>
+        case &quot;name&quot;:
+<span class="fc" id="L151">            comparator = Comparator.comparing(Student::getName);</span>
+<span class="fc" id="L152">            break;</span>
+        case &quot;phone&quot;:
+<span class="fc" id="L154">            comparator = Comparator.comparing(Student::getPhone);</span>
+<span class="fc" id="L155">            break;</span>
+        case &quot;star&quot;:
+<span class="fc" id="L157">            comparator = Comparator.comparing(Student::getStar);</span>
+<span class="fc" id="L158">            break;</span>
+        default:
+<span class="fc" id="L160">            throw new IllegalArgumentException(&quot;Invalid field for sorting: &quot; + field);</span>
+        }
+<span class="fc bfc" id="L162" title="All 2 branches covered.">        if (!isAscending) {</span>
+<span class="fc" id="L163">            comparator = comparator.reversed();</span>
+        }
+<span class="fc" id="L165">        sortedStudents.setComparator(comparator);</span>
+<span class="fc" id="L166">    }</span>
+    @Override
+    public ObservableList&lt;Student&gt; getCorrectStudentList() {
+<span class="fc" id="L169">        return sortedStudents;</span>
+    }
+
+    @Override
+    public boolean equals(Object other) {
+<span class="fc bfc" id="L174" title="All 2 branches covered.">        if (other == this) {</span>
+<span class="fc" id="L175">            return true;</span>
+        }
+
+        // instanceof handles nulls
+<span class="fc bfc" id="L179" title="All 2 branches covered.">        if (!(other instanceof ModelManager)) {</span>
+<span class="fc" id="L180">            return false;</span>
+        }
+
+<span class="fc" id="L183">        ModelManager otherModelManager = (ModelManager) other;</span>
+<span class="fc bfc" id="L184" title="All 2 branches covered.">        return addressBook.equals(otherModelManager.addressBook)</span>
+<span class="fc bfc" id="L185" title="All 2 branches covered.">                &amp;&amp; userPrefs.equals(otherModelManager.userPrefs)</span>
+<span class="fc bfc" id="L186" title="All 2 branches covered.">                &amp;&amp; filteredStudents.equals(otherModelManager.filteredStudents);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

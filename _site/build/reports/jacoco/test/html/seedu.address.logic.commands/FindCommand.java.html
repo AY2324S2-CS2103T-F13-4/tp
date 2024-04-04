@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FindCommand.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tp</a> &gt; <a href="index.source.html" class="el_package">seedu.address.logic.commands</a> &gt; <span class="el_source">FindCommand.java</span></div><h1>FindCommand.java</h1><pre class="source lang-java linenums">package seedu.address.logic.commands;
+
+import static java.util.Objects.requireNonNull;
+
+import java.util.function.Predicate;
+
+import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.logic.Messages;
+import seedu.address.model.Model;
+import seedu.address.model.student.Student;
+
+/**
+ * Finds and lists all persons in address book who matches the given predicate.
+ * Text matching is case-insensitive.
+ */
+public class FindCommand extends Command {
+
+    public static final String COMMAND_WORD = &quot;find&quot;;
+
+    public static final String MESSAGE_USAGE = COMMAND_WORD + &quot;: Finds students based on specified criteria.\n&quot;
+            + &quot;Parameters: FIELD CRITERIA \n&quot;
+            + &quot;Example: &quot; + COMMAND_WORD + &quot; name Alex\n&quot;
+            + &quot;Example: &quot; + COMMAND_WORD + &quot; star &lt; 1\n&quot;
+            + &quot;Available fields: name, major, star, bolt, tag\n&quot;
+            + &quot;Note:\n&quot;
+            + &quot;- For name field, multiple keywords can be used to perform a keyword search.\n&quot;
+            + &quot;- For star/bolt field, CRITERIA consists of comparison operators (&lt;, &lt;=, &gt;, &gt;=, =)\n&quot;
+            + &quot;followed by a whitespace and a single number.&quot;;
+
+    private final Predicate&lt;Student&gt; predicate;
+
+<span class="fc" id="L32">    public FindCommand(Predicate&lt;Student&gt; predicate) {</span>
+<span class="fc" id="L33">        this.predicate = predicate;</span>
+<span class="fc" id="L34">    }</span>
+
+    @Override
+    public CommandResult execute(Model model) {
+<span class="fc" id="L38">        requireNonNull(model);</span>
+<span class="fc" id="L39">        model.updateFilteredStudentList(predicate);</span>
+<span class="fc" id="L40">        return new CommandResult(</span>
+<span class="fc" id="L41">                String.format(Messages.MESSAGE_STUDENTS_LISTED_OVERVIEW, model.getFilteredStudentList().size()));</span>
+    }
+
+    @Override
+    public boolean equals(Object other) {
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        if (other == this) {</span>
+<span class="fc" id="L47">            return true;</span>
+        }
+
+        // instanceof handles nulls
+<span class="fc bfc" id="L51" title="All 2 branches covered.">        if (!(other instanceof FindCommand)) {</span>
+<span class="fc" id="L52">            return false;</span>
+        }
+
+<span class="fc" id="L55">        FindCommand otherFindCommand = (FindCommand) other;</span>
+<span class="fc" id="L56">        return predicate.equals(otherFindCommand.predicate);</span>
+    }
+
+    public static String getSpecificMessageUsage(String field) {
+<span class="fc" id="L60">        String specificMessageUsage = COMMAND_WORD + &quot; &quot; + field + &quot;: &quot;;</span>
+<span class="pc bpc" id="L61" title="1 of 6 branches missed.">        switch (field) {</span>
+        case &quot;name&quot;:
+<span class="fc" id="L63">            specificMessageUsage += &quot;Finds students with names that contain any of the keywords specified.\n&quot;</span>
+                    + &quot;Parameters: KEYWORD [MORE KEYWORDS]\n&quot;
+                    + &quot;Example: &quot; + COMMAND_WORD + &quot; name Alex Bernice&quot;;
+<span class="fc" id="L66">            break;</span>
+        case &quot;major&quot;:
+<span class="fc" id="L68">            specificMessageUsage += &quot;Finds students with majors that contain the keyword specified.\n&quot;</span>
+                    + &quot;Parameters: KEYWORD\n&quot;
+                    + &quot;Example: &quot; + COMMAND_WORD + &quot; major Computer Science&quot;;
+<span class="fc" id="L71">            break;</span>
+        case &quot;star&quot;:
+<span class="fc" id="L73">            specificMessageUsage += &quot;Finds students with stars that fall within the specified range.\n&quot;</span>
+                    + &quot;Parameters: OPERATOR NUMBER\n&quot;
+                    + &quot;Example: &quot; + COMMAND_WORD + &quot; star &lt; 1\n&quot;
+                    + &quot;Note: Valid operators are &lt;, &lt;=, &gt;, &gt;=, =. Only non-negative integers.&quot;;
+<span class="fc" id="L77">            break;</span>
+        case &quot;bolt&quot;:
+<span class="fc" id="L79">            specificMessageUsage += &quot;Finds students with bolts that fall within the specified range.\n&quot;</span>
+                    + &quot;Parameters: OPERATOR NUMBER\n&quot;
+                    + &quot;Example: &quot; + COMMAND_WORD + &quot; bolt &gt; 1\n&quot;
+                    + &quot;Note: Valid operators are &lt;, &lt;=, &gt;, &gt;=, =. Only non-negative integers.&quot;;
+<span class="fc" id="L83">            break;</span>
+        case &quot;tag&quot;:
+<span class="fc" id="L85">            specificMessageUsage += &quot;Finds students with tags that contain the keyword specified.\n&quot;</span>
+                    + &quot;Parameters: KEYWORD\n&quot;
+                    + &quot;Example: &quot; + COMMAND_WORD + &quot; tag CS2103T&quot;;
+<span class="fc" id="L88">            break;</span>
+        default:
+        }
+<span class="fc" id="L91">        return specificMessageUsage;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L96">        return new ToStringBuilder(this)</span>
+<span class="fc" id="L97">                .add(&quot;predicate&quot;, predicate)</span>
+<span class="fc" id="L98">                .toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

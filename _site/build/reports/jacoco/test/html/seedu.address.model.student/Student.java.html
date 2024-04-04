@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Student.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tp</a> &gt; <a href="index.source.html" class="el_package">seedu.address.model.student</a> &gt; <span class="el_source">Student.java</span></div><h1>Student.java</h1><pre class="source lang-java linenums">package seedu.address.model.student;
+
+import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
+import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.model.tag.Tag;
+
+/**
+ * Represents a Student in the address book.
+ * Guarantees: details are present and not null, field values are validated, immutable.
+ */
+public class Student {
+
+    // Identity fields
+    private final Name name;
+    private final Phone phone;
+    private final Email email;
+
+    // Data fields
+    private final Major major;
+    private final Star star;
+    private final Bolt bolt;
+<span class="fc" id="L28">    private final Set&lt;Tag&gt; tags = new HashSet&lt;&gt;();</span>
+
+    /**
+     * Every field must be present and not null.
+     */
+<span class="fc" id="L33">    public Student(Name name, Phone phone, Email email, Major major, Set&lt;Tag&gt; tags) {</span>
+<span class="fc" id="L34">        requireAllNonNull(name, phone, email, major, tags);</span>
+<span class="fc" id="L35">        this.name = name;</span>
+<span class="fc" id="L36">        this.phone = phone;</span>
+<span class="fc" id="L37">        this.email = email;</span>
+<span class="fc" id="L38">        this.major = major;</span>
+<span class="fc" id="L39">        this.star = Star.NO_STAR;</span>
+<span class="fc" id="L40">        this.bolt = Bolt.NO_BOLT;</span>
+<span class="fc" id="L41">        this.tags.addAll(tags);</span>
+<span class="fc" id="L42">    }</span>
+
+    /**
+     * Every field must be present and not null. Alternative constructor to instantiate a Student
+     * with an existing star and bolt.
+     */
+<span class="fc" id="L48">    public Student(Name name, Phone phone, Email email, Major major, Star star, Bolt bolt, Set&lt;Tag&gt; tags) {</span>
+<span class="fc" id="L49">        requireAllNonNull(name, phone, email, major, star, tags);</span>
+<span class="fc" id="L50">        this.name = name;</span>
+<span class="fc" id="L51">        this.phone = phone;</span>
+<span class="fc" id="L52">        this.email = email;</span>
+<span class="fc" id="L53">        this.major = major;</span>
+<span class="fc" id="L54">        this.star = star;</span>
+<span class="fc" id="L55">        this.bolt = bolt;</span>
+<span class="fc" id="L56">        this.tags.addAll(tags);</span>
+<span class="fc" id="L57">    }</span>
+
+    public Name getName() {
+<span class="fc" id="L60">        return name;</span>
+    }
+
+    public Phone getPhone() {
+<span class="fc" id="L64">        return phone;</span>
+    }
+
+    public Email getEmail() {
+<span class="fc" id="L68">        return email;</span>
+    }
+
+    public Major getMajor() {
+<span class="fc" id="L72">        return major;</span>
+    }
+
+    public Star getStar() {
+<span class="fc" id="L76">        return star;</span>
+    } // get the stars
+
+    public Bolt getBolt() {
+<span class="fc" id="L80">        return bolt;</span>
+    } // get the bolts
+
+    public int getStarCount() {
+<span class="nc" id="L84">        return star.numOfStars;</span>
+    } //get the star count
+
+    /**
+     * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
+     * if modification is attempted.
+     */
+    public Set&lt;Tag&gt; getTags() {
+<span class="fc" id="L92">        return Collections.unmodifiableSet(tags);</span>
+    }
+
+    /**
+     * Returns true if both students have the same name.
+     * This defines a weaker notion of equality between two students.
+     */
+    public boolean isSameStudent(Student otherStudent) {
+<span class="fc bfc" id="L100" title="All 2 branches covered.">        if (otherStudent == this) {</span>
+<span class="fc" id="L101">            return true;</span>
+        }
+
+<span class="fc bfc" id="L104" title="All 2 branches covered.">        return otherStudent != null</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">                &amp;&amp; otherStudent.getName().equals(getName());</span>
+    }
+
+    /**
+     * Returns true if both students have the same identity and data fields.
+     * This defines a stronger notion of equality between two students.
+     */
+    @Override
+    public boolean equals(Object other) {
+<span class="fc bfc" id="L114" title="All 2 branches covered.">        if (other == this) {</span>
+<span class="fc" id="L115">            return true;</span>
+        }
+
+        // instanceof handles nulls
+<span class="fc bfc" id="L119" title="All 2 branches covered.">        if (!(other instanceof Student)) {</span>
+<span class="fc" id="L120">            return false;</span>
+        }
+
+<span class="fc" id="L123">        Student otherStudent = (Student) other;</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">        return name.equals(otherStudent.name)</span>
+<span class="fc bfc" id="L125" title="All 2 branches covered.">                &amp;&amp; phone.equals(otherStudent.phone)</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">                &amp;&amp; email.equals(otherStudent.email)</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">                &amp;&amp; major.equals(otherStudent.major)</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">                &amp;&amp; star.equals(otherStudent.star)</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">                &amp;&amp; bolt.equals(otherStudent.bolt)</span>
+<span class="fc bfc" id="L130" title="All 2 branches covered.">                &amp;&amp; tags.equals(otherStudent.tags);</span>
+    }
+
+    @Override
+    public int hashCode() {
+        // use this method for custom fields hashing instead of implementing your own
+<span class="nc" id="L136">        return Objects.hash(name, phone, email, major, star, bolt, tags);</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L141">        return new ToStringBuilder(this)</span>
+<span class="fc" id="L142">                .add(&quot;name&quot;, name)</span>
+<span class="fc" id="L143">                .add(&quot;phone&quot;, phone)</span>
+<span class="fc" id="L144">                .add(&quot;email&quot;, email)</span>
+<span class="fc" id="L145">                .add(&quot;major&quot;, major)</span>
+<span class="fc" id="L146">                .add(&quot;star&quot;, star)</span>
+<span class="fc" id="L147">                .add(&quot;bolt&quot;, bolt)</span>
+<span class="fc" id="L148">                .add(&quot;tags&quot;, tags)</span>
+<span class="fc" id="L149">                .toString();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

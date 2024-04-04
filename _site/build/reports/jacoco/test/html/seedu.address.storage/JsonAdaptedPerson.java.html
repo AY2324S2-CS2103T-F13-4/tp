@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JsonAdaptedPerson.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tp</a> &gt; <a href="index.source.html" class="el_package">seedu.address.storage</a> &gt; <span class="el_source">JsonAdaptedPerson.java</span></div><h1>JsonAdaptedPerson.java</h1><pre class="source lang-java linenums">package seedu.address.storage;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.model.person.Bolt;
+import seedu.address.model.person.Email;
+import seedu.address.model.person.Major;
+import seedu.address.model.person.Name;
+import seedu.address.model.person.Person;
+import seedu.address.model.person.Phone;
+import seedu.address.model.person.Star;
+import seedu.address.model.tag.Tag;
+
+/**
+ * Jackson-friendly version of {@link Person}.
+ */
+class JsonAdaptedPerson {
+
+    public static final String MISSING_FIELD_MESSAGE_FORMAT = &quot;Person's %s field is missing!&quot;;
+
+    private final String name;
+    private final String phone;
+    private final String email;
+    private final String major;
+    private final Integer star;
+    private final Integer bolt;
+<span class="fc" id="L35">    private final List&lt;JsonAdaptedTag&gt; tags = new ArrayList&lt;&gt;();</span>
+
+    /**
+     * Constructs a {@code JsonAdaptedPerson} with the given person details.
+     */
+    @JsonCreator
+    public JsonAdaptedPerson(@JsonProperty(&quot;name&quot;) String name, @JsonProperty(&quot;phone&quot;) String phone,
+            @JsonProperty(&quot;email&quot;) String email, @JsonProperty(&quot;major&quot;) String major,
+                             @JsonProperty(&quot;star&quot;) Integer star, @JsonProperty(&quot;bolt&quot;) Integer bolt,
+<span class="fc" id="L44">                             @JsonProperty(&quot;tags&quot;) List&lt;JsonAdaptedTag&gt; tags) {</span>
+<span class="fc" id="L45">        this.name = name;</span>
+<span class="fc" id="L46">        this.phone = phone;</span>
+<span class="fc" id="L47">        this.email = email;</span>
+<span class="fc" id="L48">        this.major = major;</span>
+<span class="fc" id="L49">        this.star = star;</span>
+<span class="fc" id="L50">        this.bolt = bolt;</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">        if (tags != null) {</span>
+<span class="fc" id="L52">            this.tags.addAll(tags);</span>
+        }
+<span class="fc" id="L54">    }</span>
+
+    /**
+     * Converts a given {@code Person} into this class for Jackson use.
+     */
+<span class="fc" id="L59">    public JsonAdaptedPerson(Person source) {</span>
+<span class="fc" id="L60">        name = source.getName().fullName;</span>
+<span class="fc" id="L61">        phone = source.getPhone().value;</span>
+<span class="fc" id="L62">        email = source.getEmail().value;</span>
+<span class="fc" id="L63">        major = source.getMajor().value;</span>
+<span class="fc" id="L64">        star = source.getStar().numOfStars;</span>
+<span class="fc" id="L65">        bolt = source.getBolt().numOfBolts;</span>
+<span class="fc" id="L66">        tags.addAll(source.getTags().stream()</span>
+<span class="fc" id="L67">                .map(JsonAdaptedTag::new)</span>
+<span class="fc" id="L68">                .collect(Collectors.toList()));</span>
+<span class="fc" id="L69">    }</span>
+
+    /**
+     * Converts this Jackson-friendly adapted person object into the model's {@code Person} object.
+     *
+     * @throws IllegalValueException if there were any data constraints violated in the adapted person.
+     */
+    public Person toModelType() throws IllegalValueException {
+<span class="fc" id="L77">        final List&lt;Tag&gt; personTags = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        for (JsonAdaptedTag tag : tags) {</span>
+<span class="fc" id="L79">            personTags.add(tag.toModelType());</span>
+<span class="fc" id="L80">        }</span>
+
+<span class="fc bfc" id="L82" title="All 2 branches covered.">        if (name == null) {</span>
+<span class="fc" id="L83">            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName()));</span>
+        }
+<span class="fc bfc" id="L85" title="All 2 branches covered.">        if (!Name.isValidName(name)) {</span>
+<span class="fc" id="L86">            throw new IllegalValueException(Name.MESSAGE_CONSTRAINTS);</span>
+        }
+<span class="fc" id="L88">        final Name modelName = new Name(name);</span>
+
+<span class="fc bfc" id="L90" title="All 2 branches covered.">        if (phone == null) {</span>
+<span class="fc" id="L91">            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Phone.class.getSimpleName()));</span>
+        }
+<span class="fc bfc" id="L93" title="All 2 branches covered.">        if (!Phone.isValidPhone(phone)) {</span>
+<span class="fc" id="L94">            throw new IllegalValueException(Phone.MESSAGE_CONSTRAINTS);</span>
+        }
+<span class="fc" id="L96">        final Phone modelPhone = new Phone(phone);</span>
+
+<span class="fc bfc" id="L98" title="All 2 branches covered.">        if (email == null) {</span>
+<span class="fc" id="L99">            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Email.class.getSimpleName()));</span>
+        }
+<span class="fc bfc" id="L101" title="All 2 branches covered.">        if (!Email.isValidEmail(email)) {</span>
+<span class="fc" id="L102">            throw new IllegalValueException(Email.MESSAGE_CONSTRAINTS);</span>
+        }
+<span class="fc" id="L104">        final Email modelEmail = new Email(email);</span>
+
+<span class="fc bfc" id="L106" title="All 2 branches covered.">        if (major == null) {</span>
+<span class="fc" id="L107">            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Major.class.getSimpleName()));</span>
+        }
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        if (!Major.isValidMajor(major)) {</span>
+<span class="fc" id="L110">            throw new IllegalValueException(Major.MESSAGE_CONSTRAINTS);</span>
+        }
+<span class="fc" id="L112">        final Major modelMajor = new Major(major);</span>
+
+<span class="fc bfc" id="L114" title="All 2 branches covered.">        if (star == null) {</span>
+<span class="fc" id="L115">            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Star.class.getSimpleName()));</span>
+        }
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">        if (!Star.isValidStar(star)) {</span>
+<span class="nc" id="L118">            throw new IllegalValueException(Star.MESSAGE_CONSTRAINTS);</span>
+        }
+<span class="fc" id="L120">        final Star modelStar = new Star(star);</span>
+
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">        if (bolt == null) {</span>
+<span class="nc" id="L123">            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Bolt.class.getSimpleName()));</span>
+        }
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">        if (!Bolt.isValidBolt(bolt)) {</span>
+<span class="nc" id="L126">            throw new IllegalValueException(Bolt.MESSAGE_CONSTRAINTS);</span>
+        }
+<span class="fc" id="L128">        final Bolt modelBolt = new Bolt(bolt);</span>
+
+<span class="fc" id="L130">        final Set&lt;Tag&gt; modelTags = new HashSet&lt;&gt;(personTags);</span>
+<span class="fc" id="L131">        return new Person(modelName, modelPhone, modelEmail, modelMajor, modelStar, modelBolt, modelTags);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

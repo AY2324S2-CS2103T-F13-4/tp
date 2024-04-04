@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="seedu.address.commons.util.StringUtilTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2024-04-03T09:48:35" hostname="evelyns-air-3.lan" time="0.018">
+  <properties/>
+  <testcase name="containsWordIgnoreCase_nullSentence_throwsNullPointerException()" classname="seedu.address.commons.util.StringUtilTest" time="0.002"/>
+  <testcase name="containsIgnoreCase_success()" classname="seedu.address.commons.util.StringUtilTest" time="0.0"/>
+  <testcase name="containsWordIgnoreCase_nullWord_throwsNullPointerException()" classname="seedu.address.commons.util.StringUtilTest" time="0.0"/>
+  <testcase name="containsWordIgnoreCase_validInputs_correctResult()" classname="seedu.address.commons.util.StringUtilTest" time="0.001"/>
+  <testcase name="containsWordIgnoreCase_emptyWord_throwsIllegalArgumentException()" classname="seedu.address.commons.util.StringUtilTest" time="0.001"/>
+  <testcase name="getDetails_exceptionGiven()" classname="seedu.address.commons.util.StringUtilTest" time="0.002"/>
+  <testcase name="containsWordIgnoreCase_multipleWords_throwsIllegalArgumentException()" classname="seedu.address.commons.util.StringUtilTest" time="0.001"/>
+  <testcase name="isNonZeroUnsignedInteger()" classname="seedu.address.commons.util.StringUtilTest" time="0.001"/>
+  <testcase name="containsIgnoreCase_nullWord_throws()" classname="seedu.address.commons.util.StringUtilTest" time="0.001"/>
+  <testcase name="isUnsignedInteger()" classname="seedu.address.commons.util.StringUtilTest" time="0.001"/>
+  <testcase name="getDetails_nullGiven_throwsNullPointerException()" classname="seedu.address.commons.util.StringUtilTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

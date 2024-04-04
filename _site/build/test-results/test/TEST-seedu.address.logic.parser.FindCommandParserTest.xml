@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="seedu.address.logic.parser.FindCommandParserTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2024-04-03T09:48:36" hostname="evelyns-air-3.lan" time="0.009">
+  <properties/>
+  <testcase name="parseFindStar_validArgs_returnsFindCommand()" classname="seedu.address.logic.parser.FindCommandParserTest" time="0.0"/>
+  <testcase name="parse_emptyArg_throwsParseException()" classname="seedu.address.logic.parser.FindCommandParserTest" time="0.002"/>
+  <testcase name="parseFindName_validArgs_returnsFindCommand()" classname="seedu.address.logic.parser.FindCommandParserTest" time="0.001"/>
+  <testcase name="parseFindStar_invalidArgs_throwsParseException()" classname="seedu.address.logic.parser.FindCommandParserTest" time="0.0"/>
+  <testcase name="isInvalidOperator_validOperator_false()" classname="seedu.address.logic.parser.FindCommandParserTest" time="0.0"/>
+  <testcase name="parse_invalidField_throwsParseException()" classname="seedu.address.logic.parser.FindCommandParserTest" time="0.0"/>
+  <testcase name="isInvalidOperator_invalidOperator_true()" classname="seedu.address.logic.parser.FindCommandParserTest" time="0.0"/>
+  <testcase name="parseFindBolt_invalidArgs_throwsParseException()" classname="seedu.address.logic.parser.FindCommandParserTest" time="0.001"/>
+  <testcase name="parseFindBolt_validArgs_returnsFindCommand()" classname="seedu.address.logic.parser.FindCommandParserTest" time="0.001"/>
+  <testcase name="parseFindMajor_validArgs_returnsFindCommand()" classname="seedu.address.logic.parser.FindCommandParserTest" time="0.001"/>
+  <testcase name="parseFindTag_validArgs_returnsFindCommand()" classname="seedu.address.logic.parser.FindCommandParserTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

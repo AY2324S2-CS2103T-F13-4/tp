@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SortCommandParser.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tp</a> &gt; <a href="index.source.html" class="el_package">seedu.address.logic.parser</a> &gt; <span class="el_source">SortCommandParser.java</span></div><h1>SortCommandParser.java</h1><pre class="source lang-java linenums">package seedu.address.logic.parser;
+
+import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
+import seedu.address.logic.commands.SortCommand;
+import seedu.address.logic.parser.exceptions.ParseException;
+
+/**
+ * Parses input arguments and creates a new SortCommand object
+ */
+<span class="fc" id="L15">public class SortCommandParser implements Parser&lt;SortCommand&gt; {</span>
+<span class="fc" id="L16">    private static final Set&lt;String&gt; VALID_FIELDS = new HashSet&lt;&gt;(Arrays.asList(</span>
+            &quot;email&quot;, &quot;major&quot;, &quot;name&quot;, &quot;phone&quot;, &quot;star&quot;
+    ));
+    /**
+     * Parses the given {@code String} of arguments in the context of the SortCommand
+     * @return a {@code SortCommand} object for execution.
+     * @throws ParseException if the user input does not conform the expected format
+     */
+    public SortCommand parse(String args) throws ParseException {
+<span class="fc" id="L25">        String trimmedArgs = args.trim();</span>
+<span class="fc" id="L26">        String[] words = trimmedArgs.split(&quot;\\s+&quot;);</span>
+
+<span class="fc bfc" id="L28" title="All 2 branches covered.">        if (words.length != 2) {</span>
+<span class="fc" id="L29">            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, SortCommand.MESSAGE_USAGE));</span>
+        }
+
+<span class="fc" id="L32">        String field = words[0];</span>
+<span class="fc bfc" id="L33" title="All 2 branches covered.">        if (!VALID_FIELDS.contains(field)) {</span>
+<span class="fc" id="L34">            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, SortCommand.MESSAGE_USAGE));</span>
+        }
+
+<span class="fc" id="L37">        String direction = words[1].toLowerCase();</span>
+<span class="fc" id="L38">        boolean isAscending = parseDirection(direction);</span>
+<span class="fc" id="L39">        return new SortCommand(field, isAscending);</span>
+    }
+
+    private boolean parseDirection(String direction) throws ParseException {
+<span class="fc bfc" id="L43" title="All 3 branches covered.">        switch (direction) {</span>
+        case &quot;asc&quot;:
+<span class="fc" id="L45">            return true;</span>
+        case &quot;desc&quot;:
+<span class="fc" id="L47">            return false;</span>
+        default:
+<span class="fc" id="L49">            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, SortCommand.MESSAGE_USAGE));</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

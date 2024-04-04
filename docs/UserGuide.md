@@ -169,7 +169,7 @@ Examples:
 
 ### Locating students by name: `find`
 
-Finds students whose names contain any of the given keywords.
+{% include_relative _includes/admonitions.html type="info" title="Info" body="Finds students whose names contain any of the given keywords." %}
 
 Format: `find KEYWORD [MORE_KEYWORDS]`
 
@@ -258,14 +258,14 @@ _Details coming soon ..._
 
 ## Command summary
 
-Action | Format, Examples
---------|------------------
-**Add** | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
-**Clear** | `clear`
-**Delete** | `delete INDEX`<br> e.g., `delete 3`
-**Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
-**Star** | `star INDEX [s/STAR]` <br> e.g., `star 1 s/5`
-**Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
-**FindTag** | `findtag TAG`<br> e.g., `find Friend`
-**List** | `list`
-**Help** | `help`
+| Action      | Format, Examples                                                                                                                                                      |
+|-------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Add**     | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague` |
+| **Clear**   | `clear`                                                                                                                                                               |
+| **Delete**  | `delete INDEX`<br> e.g., `delete 3`                                                                                                                                   |
+| **Edit**    | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`                                           |
+| **Star**    | `star INDEX [s/STAR]` <br> e.g., `star 1 s/5`                                                                                                                         |
+| **Find**    | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`                                                                                                            |
+| **FindTag** | `findtag TAG`<br> e.g., `find Friend`                                                                                                                                 |
+| **List**    | `list`                                                                                                                                                                |
+| **Help**    | `help`                                                                                                                                                                |

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="seedu.address.model.ModelManagerTest" tests="14" skipped="0" failures="0" errors="0" timestamp="2024-04-03T09:48:36" hostname="evelyns-air-3.lan" time="0.015">
+  <properties/>
+  <testcase name="setUserPrefs_nullUserPrefs_throwsNullPointerException()" classname="seedu.address.model.ModelManagerTest" time="0.001"/>
+  <testcase name="constructor()" classname="seedu.address.model.ModelManagerTest" time="0.001"/>
+  <testcase name="hasStudent_nullStudent_throwsNullPointerException()" classname="seedu.address.model.ModelManagerTest" time="0.0"/>
+  <testcase name="setGuiSettings_validGuiSettings_setsGuiSettings()" classname="seedu.address.model.ModelManagerTest" time="0.0"/>
+  <testcase name="equals()" classname="seedu.address.model.ModelManagerTest" time="0.001"/>
+  <testcase name="setAddressBookFilePath_nullPath_throwsNullPointerException()" classname="seedu.address.model.ModelManagerTest" time="0.0"/>
+  <testcase name="updateSortedPersonListByField_sortPhoneAscending_success()" classname="seedu.address.model.ModelManagerTest" time="0.001"/>
+  <testcase name="hasStudent_studentInAddressBook_returnsTrue()" classname="seedu.address.model.ModelManagerTest" time="0.001"/>
+  <testcase name="getFilteredStudentList_modifyList_throwsUnsupportedOperationException()" classname="seedu.address.model.ModelManagerTest" time="0.001"/>
+  <testcase name="setUserPrefs_validUserPrefs_copiesUserPrefs()" classname="seedu.address.model.ModelManagerTest" time="0.0"/>
+  <testcase name="setAddressBookFilePath_validPath_setsAddressBookFilePath()" classname="seedu.address.model.ModelManagerTest" time="0.0"/>
+  <testcase name="hasStudent_studentNotInAddressBook_returnsFalse()" classname="seedu.address.model.ModelManagerTest" time="0.0"/>
+  <testcase name="updateSortedPersonListByField_invalidField_throwsException()" classname="seedu.address.model.ModelManagerTest" time="0.001"/>
+  <testcase name="setGuiSettings_nullGuiSettings_throwsNullPointerException()" classname="seedu.address.model.ModelManagerTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
