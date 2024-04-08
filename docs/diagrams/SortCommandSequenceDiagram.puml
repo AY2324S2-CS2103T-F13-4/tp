@@ -4,7 +4,7 @@ skinparam ArrowFontStyle plain
 
 box Logic LOGIC_COLOR_T1
 participant ":LogicManager" as LogicManager LOGIC_COLOR
-participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":ClassMonitorParser" as ClassMonitorParser LOGIC_COLOR
 participant ":SortCommandParser" as SortCommandParser LOGIC_COLOR
 participant "d:SortCommand" as SortCommand LOGIC_COLOR
 participant "r:CommandResult" as CommandResult LOGIC_COLOR
@@ -17,17 +17,17 @@ end box
 [-> LogicManager : execute("sort name desc")
 activate LogicManager
 
-LogicManager -> AddressBookParser : parseCommand("sort name desc")
-activate AddressBookParser
+LogicManager -> ClassMonitorParser : parseCommand("sort name desc")
+activate ClassMonitorParser
 
 create SortCommandParser
-AddressBookParser -> SortCommandParser
+ClassMonitorParser -> SortCommandParser
 activate SortCommandParser
 
-SortCommandParser --> AddressBookParser
+SortCommandParser --> ClassMonitorParser
 deactivate SortCommandParser
 
-AddressBookParser -> SortCommandParser : parse("name desc")
+ClassMonitorParser -> SortCommandParser : parse("name desc")
 activate SortCommandParser
 
 create SortCommand
@@ -37,15 +37,15 @@ activate SortCommand
 SortCommand --> SortCommandParser :
 deactivate SortCommand
 
-SortCommandParser --> AddressBookParser : d
+SortCommandParser --> ClassMonitorParser : d
 deactivate SortCommandParser
 'Hidden arrow to position the destroy marker below the end of the activation bar.
-SortCommandParser -[hidden]-> AddressBookParser
+SortCommandParser -[hidden]-> ClassMonitorParser
 destroy SortCommandParser
 deactivate SortCommandParser
 
-AddressBookParser --> LogicManager : d
-deactivate AddressBookParser
+ClassMonitorParser --> LogicManager : d
+deactivate ClassMonitorParser
 
 LogicManager -> SortCommand : execute(m)
 activate SortCommand

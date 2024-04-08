@@ -62,10 +62,10 @@ public class EditCommandParser implements Parser<EditCommand> {
             editStudentDescriptor.setMajor(ParserUtil.parseMajor(argMultimap.getValue(PREFIX_MAJOR).get()));
         }
         if (argMultimap.getValue(PREFIX_STAR).isPresent()) {
-            editStudentDescriptor.setStar(ParserUtil.parseStar(argMultimap.getValue(PREFIX_STAR).get()));
+            editStudentDescriptor.setStar(ParserUtil.parseStarEdit(argMultimap.getValue(PREFIX_STAR).get()));
         }
         if (argMultimap.getValue(PREFIX_BOLT).isPresent()) {
-            editStudentDescriptor.setBolt(ParserUtil.parseBolt(argMultimap.getValue(PREFIX_BOLT).get()));
+            editStudentDescriptor.setBolt(ParserUtil.parseBoltEdit(argMultimap.getValue(PREFIX_BOLT).get()));
         }
         parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editStudentDescriptor::setTags);
 

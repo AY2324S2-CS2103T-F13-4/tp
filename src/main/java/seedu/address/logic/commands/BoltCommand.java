@@ -55,8 +55,11 @@ public class BoltCommand extends Command {
         }
 
         Student studentToEdit = lastShownList.get(index.getZeroBased()); // get Student indexed
-        Bolt boltToEdit = studentToEdit.getBolt(); // return the bolts
-        Bolt editedBolt = new Bolt(boltToEdit.numOfBolts + this.bolt.numOfBolts); // new Bolt to be added
+        int totalBolts = this.bolt.numOfBolts + studentToEdit.getBoltCount();
+        if (!Bolt.isValidBolt(totalBolts)) {
+            throw new CommandException(Bolt.MESSAGE_CONSTRAINTS);
+        }
+        Bolt editedBolt = new Bolt(totalBolts); // new Bolt to be added
 
         Student editedStudent = new Student(
                 studentToEdit.getName(), studentToEdit.getPhone(), studentToEdit.getEmail(),

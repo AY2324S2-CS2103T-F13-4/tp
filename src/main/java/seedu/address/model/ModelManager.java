@@ -21,28 +21,28 @@ import seedu.address.model.student.Student;
 public class ModelManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
-    private final AddressBook addressBook;
+    private final ClassMonitor classMonitor;
     private final UserPrefs userPrefs;
     private final SortedList<Student> sortedStudents;
     private final FilteredList<Student> filteredStudents;
 
     /**
-     * Initializes a ModelManager with the given addressBook and userPrefs.
+     * Initializes a ModelManager with the given classMonitor and userPrefs.
      */
-    public ModelManager(ReadOnlyAddressBook addressBook, ReadOnlyUserPrefs userPrefs) {
-        requireAllNonNull(addressBook, userPrefs);
+    public ModelManager(ReadOnlyClassMonitor classMonitor, ReadOnlyUserPrefs userPrefs) {
+        requireAllNonNull(classMonitor, userPrefs);
 
-        logger.fine("Initializing with address book: " + addressBook + " and user prefs " + userPrefs);
+        logger.fine("Initializing with address book: " + classMonitor + " and user prefs " + userPrefs);
 
-        this.addressBook = new AddressBook(addressBook);
+        this.classMonitor = new ClassMonitor(classMonitor);
         this.userPrefs = new UserPrefs(userPrefs);
         //initially both lists would be the same as the default
-        filteredStudents = new FilteredList<>(this.addressBook.getStudentList());
+        filteredStudents = new FilteredList<>(this.classMonitor.getStudentList());
         sortedStudents = new SortedList<>(filteredStudents);
     }
 
     public ModelManager() {
-        this(new AddressBook(), new UserPrefs());
+        this(new ClassMonitor(), new UserPrefs());
     }
 
     //=========== UserPrefs ==================================================================================
@@ -70,57 +70,59 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public Path getAddressBookFilePath() {
-        return userPrefs.getAddressBookFilePath();
+    public Path getClassMonitorFilePath() {
+        return userPrefs.getClassMonitorFilePath();
     }
 
     @Override
-    public void setAddressBookFilePath(Path addressBookFilePath) {
-        requireNonNull(addressBookFilePath);
-        userPrefs.setAddressBookFilePath(addressBookFilePath);
+    public void setClassMonitorFilePath(Path classMonitorFilePath) {
+        requireNonNull(classMonitorFilePath);
+        userPrefs.setClassMonitorFilePath(classMonitorFilePath);
     }
 
-    //=========== AddressBook ================================================================================
+    //=========== ClassMonitor ================================================================================
 
     @Override
-    public void setAddressBook(ReadOnlyAddressBook addressBook) {
-        this.addressBook.resetData(addressBook);
+    public void setClassMonitor(ReadOnlyClassMonitor classMonitor) {
+        this.classMonitor.resetData(classMonitor);
     }
 
     @Override
-    public ReadOnlyAddressBook getAddressBook() {
-        return addressBook;
+    public ReadOnlyClassMonitor getClassMonitor() {
+        return classMonitor;
     }
 
     @Override
     public boolean hasStudent(Student student) {
         requireNonNull(student);
-        return addressBook.hasStudent(student);
+        return classMonitor.hasStudent(student);
     }
 
     @Override
     public void deleteStudent(Student target) {
-        addressBook.removeStudent(target);
+        updateSortedStudentListByField("name", true);
+        classMonitor.removeStudent(target);
     }
 
     @Override
     public void addStudent(Student student) {
-        addressBook.addStudent(student);
+        updateSortedStudentListByField("name", true);
+        classMonitor.addStudent(student);
         updateFilteredStudentList(PREDICATE_SHOW_ALL_STUDENTS);
     }
 
     @Override
     public void setStudent(Student target, Student editedStudent) {
         requireAllNonNull(target, editedStudent);
-
-        addressBook.setStudent(target, editedStudent);
+        classMonitor.setStudent(target, editedStudent);
+        updateSortedStudentListByField("name", true);
     }
 
     //=========== Filtered & Sorted Student List Accessors =============================================================
 
     /**
      * Returns an unmodifiable view of the list of {@code Student} backed by the internal list of
-     * {@code versionedAddressBook}
+     * {@code versionedClassMonitor}
      */
     @Override
     public ObservableList<Student> getFilteredStudentList() {
@@ -156,12 +158,16 @@ public class ModelManager implements Model {
         case "star":
             comparator = Comparator.comparing(Student::getStar);
             break;
+        case "bolt":
+            comparator = Comparator.comparing(Student::getBolt);
+            break;
         default:
             throw new IllegalArgumentException("Invalid field for sorting: " + field);
         }
         if (!isAscending) {
             comparator = comparator.reversed();
         }
+        comparator = comparator.thenComparing(Student::getName);
         sortedStudents.setComparator(comparator);
     }
     @Override
@@ -181,7 +187,7 @@ public class ModelManager implements Model {
         }
 
         ModelManager otherModelManager = (ModelManager) other;
-        return addressBook.equals(otherModelManager.addressBook)
+        return classMonitor.equals(otherModelManager.classMonitor)
                 && userPrefs.equals(otherModelManager.userPrefs)
                 && filteredStudents.equals(otherModelManager.filteredStudents);
     }

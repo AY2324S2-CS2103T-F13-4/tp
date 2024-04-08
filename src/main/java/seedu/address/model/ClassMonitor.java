@@ -13,7 +13,7 @@ import seedu.address.model.student.UniqueStudentList;
  * Wraps all data at the address-book level
  * Duplicates are not allowed (by .isSameStudent comparison)
  */
-public class AddressBook implements ReadOnlyAddressBook {
+public class ClassMonitor implements ReadOnlyClassMonitor {
 
     private final UniqueStudentList students;
 
@@ -28,12 +28,12 @@ public class AddressBook implements ReadOnlyAddressBook {
         students = new UniqueStudentList();
     }
 
-    public AddressBook() {}
+    public ClassMonitor() {}
 
     /**
-     * Creates an AddressBook using the Students in the {@code toBeCopied}
+     * Creates an ClassMonitor using the Students in the {@code toBeCopied}
      */
-    public AddressBook(ReadOnlyAddressBook toBeCopied) {
+    public ClassMonitor(ReadOnlyClassMonitor toBeCopied) {
         this();
         resetData(toBeCopied);
     }
@@ -49,9 +49,9 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     /**
-     * Resets the existing data of this {@code AddressBook} with {@code newData}.
+     * Resets the existing data of this {@code ClassMonitor} with {@code newData}.
      */
-    public void resetData(ReadOnlyAddressBook newData) {
+    public void resetData(ReadOnlyClassMonitor newData) {
         requireNonNull(newData);
 
         setStudents(newData.getStudentList());
@@ -88,7 +88,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     /**
-     * Removes {@code key} from this {@code AddressBook}.
+     * Removes {@code key} from this {@code ClassMonitor}.
      * {@code key} must exist in the address book.
      */
     public void removeStudent(Student key) {
@@ -116,12 +116,12 @@ public class AddressBook implements ReadOnlyAddressBook {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof AddressBook)) {
+        if (!(other instanceof ClassMonitor)) {
             return false;
         }
 
-        AddressBook otherAddressBook = (AddressBook) other;
-        return students.equals(otherAddressBook.students);
+        ClassMonitor otherClassMonitor = (ClassMonitor) other;
+        return students.equals(otherClassMonitor.students);
     }
 
     @Override

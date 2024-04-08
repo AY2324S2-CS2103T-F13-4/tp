@@ -22,9 +22,9 @@ import seedu.address.model.tag.Tag;
  */
 public class ParserUtil {
 
-    public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
-    public static final String MESSAGE_INVALID_STAR = "Star is not a non-zero unsigned integer.";
-    public static final String MESSAGE_INVALID_BOLT = "Bolt is not a non-zero unsigned integer.";
+    public static final String MESSAGE_INVALID_INDEX = "Index should be a positive integer (one-based).";
+    public static final String MESSAGE_INVALID_STAR = "Stars given should be a positive integer between 1 and 10.";
+    public static final String MESSAGE_INVALID_BOLT = "Bolts given should be a positive integer between 1 and 10.";
 
 
     /**
@@ -104,16 +104,35 @@ public class ParserUtil {
      * Parses a {@code String star} into a {@code Star}.
      * Leading and trailing whitespaces will be trimmed.
      *
-     * @throws ParseException if the given {@code Star} is invalid.
+     * @throws ParseException if the given {@code Star} is invalid. In this case, Star should be >0 and <10.
      */
     public static Star parseStar(String star) throws ParseException {
         requireNonNull(star);
-        String trimmedStar = star.trim(); // trim the string to only get the number
-        if (!StringUtil.isUnsignedInteger(trimmedStar)) {
+        String trimmedStar = star.trim();
+        if (!StringUtil.isNonZeroUnsignedInteger(trimmedStar)) { // Star should be a positive integer
             throw new ParseException(MESSAGE_INVALID_STAR);
-        } // checks if Star is in fact an Integer
+        }
         Integer starCount = Integer.parseInt(trimmedStar);
-        if (!Star.isValidStar(starCount)) { // check whether star is a valid Integer >= 0
+        if (starCount > 10) { // Star given should be <11
+            throw new ParseException(MESSAGE_INVALID_STAR);
+        }
+        return new Star(starCount);
+    }
+
+    /**
+     * Parses a {@code String star} into a {@code Star}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code Star} is invalid. In this case, Star should be >=0 and <50000.
+     */
+    public static Star parseStarEdit(String star) throws ParseException {
+        requireNonNull(star);
+        String trimmedStar = star.trim();
+        if (!StringUtil.isUnsignedInteger(trimmedStar)) { // Star should be a positive integer
+            throw new ParseException(Star.MESSAGE_CONSTRAINTS);
+        }
+        Integer starCount = Integer.parseInt(trimmedStar);
+        if (!Star.isValidStar(starCount)) { // Star given should be >=0 and <50000
             throw new ParseException(Star.MESSAGE_CONSTRAINTS);
         }
         return new Star(starCount);
@@ -123,20 +142,41 @@ public class ParserUtil {
      * Parses a {@code String bolt} into a {@code Bolt}.
      * Leading and trailing whitespaces will be trimmed.
      *
-     * @throws ParseException if the given {@code Bolt} is invalid.
+     * @throws ParseException if the given {@code Bolt} is invalid. In this case, Bolt should be >0 and <10.
      */
     public static Bolt parseBolt(String bolt) throws ParseException {
         requireNonNull(bolt);
-        String trimmedBolt = bolt.trim(); // trim the string to only get the number
-        if (!StringUtil.isUnsignedInteger(trimmedBolt)) {
+        String trimmedBolt = bolt.trim();
+        if (!StringUtil.isNonZeroUnsignedInteger(trimmedBolt)) { // Bolt should be a positive integer
             throw new ParseException(MESSAGE_INVALID_BOLT);
-        } // checks if Bolt is in fact an Integer
+        }
         Integer boltCount = Integer.parseInt(trimmedBolt);
-        if (!Bolt.isValidBolt(boltCount)) { // check whether bolt is a valid Integer >= 0
+        if (boltCount > 10) { // Bolt given should be <11
+            throw new ParseException(MESSAGE_INVALID_BOLT);
+        }
+        return new Bolt(boltCount);
+    }
+
+
+    /**
+     * Parses a {@code String bolt} into a {@code Bolt}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code Bolt} is invalid. In this case, Bolt should be >=0 and <50000.
+     */
+    public static Bolt parseBoltEdit(String bolt) throws ParseException {
+        requireNonNull(bolt);
+        String trimmedBolt = bolt.trim();
+        if (!StringUtil.isUnsignedInteger(trimmedBolt)) { // Bolt should be a positive integer
+            throw new ParseException(Bolt.MESSAGE_CONSTRAINTS);
+        }
+        Integer boltCount = Integer.parseInt(trimmedBolt);
+        if (!Bolt.isValidBolt(boltCount)) { // Bolt given should be >=0 and <50000
             throw new ParseException(Bolt.MESSAGE_CONSTRAINTS);
         }
         return new Bolt(boltCount);
     }
+
 
     /**
      * Parses a {@code String tag} into a {@code Tag}.

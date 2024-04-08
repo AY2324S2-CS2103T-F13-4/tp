@@ -4,6 +4,7 @@ import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_STAR;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
+import static seedu.address.logic.parser.ParserUtil.MESSAGE_INVALID_INDEX;
 import static seedu.address.logic.parser.ParserUtil.MESSAGE_INVALID_STAR;
 
 import org.junit.jupiter.api.Test;
@@ -28,8 +29,7 @@ public class StarCommandParserTest {
     @Test
     public void parse_invalidArgs_throwsParseException() {
         // invalid index
-        assertParseFailure(parser, "-1" + VALID_STAR,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, StarCommand.MESSAGE_USAGE));
+        assertParseFailure(parser, "-1" + VALID_STAR, MESSAGE_INVALID_INDEX);
 
         // invalid star value
         assertParseFailure(parser, "1" + INVALID_STAR, MESSAGE_INVALID_STAR);
@@ -61,19 +61,15 @@ public class StarCommandParserTest {
     @Test
     public void parse_invalidPreamble_failure() {
         // negative index
-        assertParseFailure(parser, "-5" + VALID_STAR,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, StarCommand.MESSAGE_USAGE));
+        assertParseFailure(parser, "-5" + VALID_STAR, MESSAGE_INVALID_INDEX);
 
         // zero index
-        assertParseFailure(parser, "0" + VALID_STAR,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, StarCommand.MESSAGE_USAGE));
+        assertParseFailure(parser, "0" + VALID_STAR, MESSAGE_INVALID_INDEX);
 
         // invalid arguments being parsed as preamble
-        assertParseFailure(parser, "1 some random string" + VALID_STAR,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, StarCommand.MESSAGE_USAGE));
+        assertParseFailure(parser, "1 some random string" + VALID_STAR, MESSAGE_INVALID_INDEX);
 
         // invalid prefix being parsed as preamble
-        assertParseFailure(parser, "1 i/ string" + VALID_STAR,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, StarCommand.MESSAGE_USAGE));
+        assertParseFailure(parser, "1 i/ string" + VALID_STAR, MESSAGE_INVALID_INDEX);
     }
 }

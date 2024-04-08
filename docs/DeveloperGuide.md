@@ -146,7 +146,7 @@ The `Storage` component,
 
 ### Common classes
 
-Classes used by multiple components are in the `seedu.addressbook.commons` package.
+Classes used by multiple components are in the `seedu.classmonitor.commons` package.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -183,7 +183,7 @@ Step 3. The `AddressBookParser` calls `StarCommandParser.parse()`, which returns
 
 </div>
 
-Step 4. `LogicManager` calls on `StarCommand.execute()`, which updates the addressbook with the new number of stars.
+Step 4. `LogicManager` calls on `StarCommand.execute()`, which updates the classmonitor with the new number of stars.
 
 #### Design considerations:
 
@@ -206,7 +206,7 @@ based on one of its fields either in ascending or descending order
 
 * `SortCommandParser#parse()` — Parses the parameters of the sort command from its command-line String input.
 * `SortCommand#execute()` — Updates the `AddressBook` to display the sorted list.
-* 
+
 #### Feature Details
 
 Here is the activity diagram showing the process of the `Sort` command:
@@ -226,7 +226,7 @@ then it will raise a parse error.
 
 </div>
 
-Step 4. `LogicManager` calls on `SortCommand.execute()`, which updates the addressbook with the new sorted list.
+Step 4. `LogicManager` calls on `SortCommand.execute()`, which updates the classmonitor with the new sorted list.
 
 ### Awarding Bolts to a Student
 
@@ -257,7 +257,7 @@ Step 3. The `AddressBookParser` calls `BoltCommandParser.parse()`, which returns
 
 </div>
 
-Step 4. `LogicManager` calls on `BoltCommand.execute()`, which updates the addressbook with the new number of bolts.
+Step 4. `LogicManager` calls on `BoltCommand.execute()`, which updates the classmonitor with the new number of bolts.
 
 #### Design considerations:
 
@@ -271,11 +271,46 @@ Step 4. `LogicManager` calls on `BoltCommand.execute()`, which updates the addre
     * Pros: Able to edit the number of bolts however one desires.
     * Cons: Command is not modularised, user have to calculate the number of bolts themselves when updating.
 
+### Finding Students
+
+#### Overview
+
+The find mechanism is facilitated by `FindCommand`, which is called by its `execute` method to filter the students
+based on one of its fields and a given criteria
+
+* `FindCommandParser#parse()` — Parses the parameters of the find command from its command-line String input.
+* `FindCommand#execute()` — Updates the `AddressBook` to display the filtered list.
+
+#### Feature Details
+
+Here is the activity diagram showing the process of the `Find` command:
+
+Here is the sequence diagram showing how a find operation goes through the `Logic`, `Model` and `Storage` components.
+
+![FindSequenceDiagram](images/FindCommandSequenceDiagram.png)
+
+Step 1. The user launches the application and enters in command: `find name Alex`.
+
+Step 2. The `LogicManager` calls on `AddressBookParser` to parse the String.
+
+Step 3. The `AddressBookParser` calls `FindCommandParser.parse()`, which then calls `FindCommandParser.parseFindName()`, which returns a `FindCommand`.
+
+<div markdown="span" class="alert alert-info">:information_source: **Note:** If either the field `field` or sorting order `isAscending`, 
+then it will raise a parse error.
+
+</div>
+
+Step 4. `LogicManager` calls on `SortCommand.execute()`, which updates the addressbook with the new filtered list.
+
+
+
+
+
 ### \[Proposed\] Undo/redo feature
 
 #### Proposed Implementation
 
-The proposed undo/redo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the following operations:
+The proposed undo/redo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo/redo history, stored internally as an `classMonitorStateList` and `currentStatePointer`. Additionally, it implements the following operations:
 
 * `VersionedAddressBook#commit()` — Saves the current address book state in its history.
 * `VersionedAddressBook#undo()` — Restores the previous address book state from its history.
@@ -289,15 +324,15 @@ Step 1. The user launches the application for the first time. The `VersionedAddr
 
 ![UndoRedoState0](images/UndoRedoState0.png)
 
-Step 2. The user executes `delete 5` command to delete the 5th student in the address book. The `delete` command calls `Model#commitAddressBook()`, causing the modified state of the address book after the `delete 5` command executes to be saved in the `addressBookStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.
+Step 2. The user executes `delete 5` command to delete the 5th student in the address book. The `delete` command calls `Model#commitAddressBook()`, causing the modified state of the address book after the `delete 5` command executes to be saved in the `classMonitorStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.
 
 ![UndoRedoState1](images/UndoRedoState1.png)
 
-Step 3. The user executes `add n/David …​` to add a new student. The `add` command also calls `Model#commitAddressBook()`, causing another modified address book state to be saved into the `addressBookStateList`.
+Step 3. The user executes `add n/David …​` to add a new student. The `add` command also calls `Model#commitAddressBook()`, causing another modified address book state to be saved into the `classMonitorStateList`.
 
 ![UndoRedoState2](images/UndoRedoState2.png)
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If a command fails its execution, it will not call `Model#commitAddressBook()`, so the address book state will not be saved into the `addressBookStateList`.
+<div markdown="span" class="alert alert-info">:information_source: **Note:** If a command fails its execution, it will not call `Model#commitAddressBook()`, so the address book state will not be saved into the `classMonitorStateList`.
 
 </div>
 
@@ -324,15 +359,15 @@ Similarly, how an undo operation goes through the `Model` component is shown bel
 
 The `redo` command does the opposite — it calls `Model#redoAddressBook()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the address book to that state.
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** If the `currentStatePointer` is at index `addressBookStateList.size() - 1`, pointing to the latest address book state, then there are no undone AddressBook states to restore. The `redo` command uses `Model#canRedoAddressBook()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
+<div markdown="span" class="alert alert-info">:information_source: **Note:** If the `currentStatePointer` is at index `classMonitorStateList.size() - 1`, pointing to the latest address book state, then there are no undone AddressBook states to restore. The `redo` command uses `Model#canRedoAddressBook()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
 
 </div>
 
-Step 5. The user then decides to execute the command `list`. Commands that do not modify the address book, such as `list`, will usually not call `Model#commitAddressBook()`, `Model#undoAddressBook()` or `Model#redoAddressBook()`. Thus, the `addressBookStateList` remains unchanged.
+Step 5. The user then decides to execute the command `list`. Commands that do not modify the address book, such as `list`, will usually not call `Model#commitAddressBook()`, `Model#undoAddressBook()` or `Model#redoAddressBook()`. Thus, the `classMonitorStateList` remains unchanged.
 
 ![UndoRedoState4](images/UndoRedoState4.png)
 
-Step 6. The user executes `clear`, which calls `Model#commitAddressBook()`. Since the `currentStatePointer` is not pointing at the end of the `addressBookStateList`, all address book states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `add n/David …​` command. This is the behavior that most modern desktop applications follow.
+Step 6. The user executes `clear`, which calls `Model#commitAddressBook()`. Since the `currentStatePointer` is not pointing at the end of the `classMonitorStateList`, all address book states after the `currentStatePointer` will be purged. Reason: It no longer makes sense to redo the `add n/David …​` command. This is the behavior that most modern desktop applications follow.
 
 ![UndoRedoState5](images/UndoRedoState5.png)
 

@@ -7,7 +7,7 @@ import seedu.address.commons.core.GuiSettings;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.ReadOnlyAddressBook;
+import seedu.address.model.ReadOnlyClassMonitor;
 import seedu.address.model.student.Student;
 
 /**
@@ -24,11 +24,11 @@ public interface Logic {
     CommandResult execute(String commandText) throws CommandException, ParseException;
 
     /**
-     * Returns the AddressBook.
+     * Returns the ClassMonitor.
      *
-     * @see seedu.address.model.Model#getAddressBook()
+     * @see seedu.address.model.Model#getClassMonitor()
      */
-    ReadOnlyAddressBook getAddressBook();
+    ReadOnlyClassMonitor getClassMonitor();
 
     /** Returns an unmodifiable view of the student list */
     ObservableList<Student> getCorrectStudentList();
@@ -39,7 +39,7 @@ public interface Logic {
     /**
      * Returns the user prefs' address book file path.
      */
-    Path getAddressBookFilePath();
+    Path getClassMonitorFilePath();
 
     /**
      * Returns the user prefs' GUI settings.

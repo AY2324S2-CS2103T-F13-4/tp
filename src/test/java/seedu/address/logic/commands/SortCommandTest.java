@@ -11,7 +11,7 @@ import static seedu.address.testutil.TypicalStudents.DANIEL;
 import static seedu.address.testutil.TypicalStudents.ELLE;
 import static seedu.address.testutil.TypicalStudents.FIONA;
 import static seedu.address.testutil.TypicalStudents.GEORGE;
-import static seedu.address.testutil.TypicalStudents.getTypicalAddressBook;
+import static seedu.address.testutil.TypicalStudents.getTypicalClassMonitor;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,8 +27,8 @@ import seedu.address.model.UserPrefs;
  * Contains integration tests (interaction with the Model) for {@code SortAscendingCommand}.
  */
 public class SortCommandTest {
-    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
-    private Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    private Model model = new ModelManager(getTypicalClassMonitor(), new UserPrefs());
+    private Model expectedModel = new ModelManager(getTypicalClassMonitor(), new UserPrefs());
 
     @Test
     public void execute_starAscending_success() {

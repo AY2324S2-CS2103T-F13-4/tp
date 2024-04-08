@@ -6,13 +6,13 @@ import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_STUDENT;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_STUDENT;
-import static seedu.address.testutil.TypicalStudents.getTypicalAddressBook;
+import static seedu.address.testutil.TypicalStudents.getTypicalClassMonitor;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
-import seedu.address.model.AddressBook;
+import seedu.address.model.ClassMonitor;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
@@ -25,7 +25,7 @@ import seedu.address.testutil.StudentBuilder;
  */
 public class StarCommandTest {
 
-    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    private Model model = new ModelManager(getTypicalClassMonitor(), new UserPrefs());
 
     @Test
     public void execute_addStarUnfilteredList_success() {
@@ -36,7 +36,7 @@ public class StarCommandTest {
 
         String expectedMessage = String.format(StarCommand.MESSAGE_ADD_STAR_SUCCESS, Messages.format(starredStudent));
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new ClassMonitor(model.getClassMonitor()), new UserPrefs());
         expectedModel.setStudent(firstStudent, starredStudent);
 
         assertCommandSuccess(starCommand, model, expectedMessage, expectedModel);

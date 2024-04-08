@@ -4,7 +4,8 @@ skinparam ArrowFontStyle plain
 
 box Logic LOGIC_COLOR_T1
 participant ":LogicManager" as LogicManager LOGIC_COLOR
-participant "addressBookParser\n:AddressBookParser" as AddressBookParser LOGIC_COLOR
+
+participant "classMonitorParser\n:ClassMonitorParser" as ClassMonitorParser LOGIC_COLOR
 participant ":BoltCommandParser" as BoltCommandParser LOGIC_COLOR
 participant ":BoltCommand" as BoltCommand LOGIC_COLOR
 participant ":CommandResult" as CommandResult LOGIC_COLOR
@@ -22,17 +23,17 @@ end box
 [-> LogicManager : execute("bolt 1 s/1")
 activate LogicManager
 
-LogicManager -> AddressBookParser : parseCommand("bolt 1 s/1")
-activate AddressBookParser
+LogicManager -> ClassMonitorParser : parseCommand("bolt 1 s/1")
+activate ClassMonitorParser
 
 create BoltCommandParser
-AddressBookParser -> BoltCommandParser
+ClassMonitorParser -> BoltCommandParser
 activate BoltCommandParser
 
-BoltCommandParser --> AddressBookParser
+BoltCommandParser --> ClassMonitorParser
 deactivate BoltCommandParser
 
-AddressBookParser -> BoltCommandParser : parse(" 1 s/1")
+ClassMonitorParser -> BoltCommandParser : parse(" 1 s/1")
 activate BoltCommandParser
 
 create Bolt
@@ -49,15 +50,15 @@ activate BoltCommand
 BoltCommand --> BoltCommandParser :
 deactivate BoltCommand
 
-BoltCommandParser --> AddressBookParser :
+BoltCommandParser --> ClassMonitorParser :
 deactivate BoltCommandParser
 'Hidden arrow to position the destroy marker below the end of the activation bar.
-BoltCommandParser -[hidden]-> AddressBookParser
+BoltCommandParser -[hidden]-> ClassMonitorParser
 destroy BoltCommandParser
 deactivate BoltCommandParser
 
-AddressBookParser --> LogicManager :
-deactivate AddressBookParser
+ClassMonitorParser --> LogicManager :
+deactivate ClassMonitorParser
 
 LogicManager -> BoltCommand : execute(model)
 activate BoltCommand
@@ -78,7 +79,7 @@ deactivate CommandResult
 BoltCommand --> LogicManager :
 deactivate BoltCommand
 
-LogicManager -> Storage : saveAddressBook(model)
+LogicManager -> Storage : saveClassMonitor(model)
 activate Storage
 
 Storage --> LogicManager

@@ -6,11 +6,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.Messages.MESSAGE_STUDENTS_LISTED_OVERVIEW;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalStudents.ALICE;
+import static seedu.address.testutil.TypicalStudents.BENSON;
 import static seedu.address.testutil.TypicalStudents.CARL;
+import static seedu.address.testutil.TypicalStudents.DANIEL;
 import static seedu.address.testutil.TypicalStudents.ELLE;
 import static seedu.address.testutil.TypicalStudents.FIONA;
 import static seedu.address.testutil.TypicalStudents.GEORGE;
-import static seedu.address.testutil.TypicalStudents.getTypicalAddressBook;
+import static seedu.address.testutil.TypicalStudents.getTypicalClassMonitor;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,8 +34,8 @@ import seedu.address.model.student.predicates.TagContainsSubStringPredicate;
  * Contains integration tests (interaction with the Model) for {@code FindCommand}.
  */
 public class FindCommandTest {
-    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
-    private Model expectedModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    private Model model = new ModelManager(getTypicalClassMonitor(), new UserPrefs());
+    private Model expectedModel = new ModelManager(getTypicalClassMonitor(), new UserPrefs());
 
     @Test
     public void equals() {
@@ -66,7 +68,7 @@ public class FindCommandTest {
     public void execute_zeroKeywords_noStudentFound() {
         String expectedMessage = String.format(MESSAGE_STUDENTS_LISTED_OVERVIEW, 0);
 
-        // zero keywords for find name
+        // blank keyword for find name
         NameContainsKeywordsPredicate firstPredicate = new NameContainsKeywordsPredicate(
                 preparePredicateInput(" "));
         FindCommand firstFindCommand = new FindCommand(firstPredicate);
@@ -74,14 +76,14 @@ public class FindCommandTest {
         assertCommandSuccess(firstFindCommand, model, expectedMessage, expectedModel);
         assertEquals(Collections.emptyList(), model.getFilteredStudentList());
 
-        // zero sub string for find major
+        // blank keyword for find major
         MajorContainsSubStringPredicate secondPredicate = new MajorContainsSubStringPredicate(" ");
         FindCommand secondFindCommand = new FindCommand(secondPredicate);
         expectedModel.updateFilteredStudentList(secondPredicate);
         assertCommandSuccess(secondFindCommand, model, expectedMessage, expectedModel);
         assertEquals(Collections.emptyList(), model.getFilteredStudentList());
 
-        // zero sub string for find tag
+        // blank keyword for find tag
         TagContainsSubStringPredicate thirdPredicate = new TagContainsSubStringPredicate(" ");
         FindCommand thirdFindCommand = new FindCommand(thirdPredicate);
         expectedModel.updateFilteredStudentList(thirdPredicate);
@@ -102,24 +104,42 @@ public class FindCommandTest {
     }
 
     @Test
-    public void execute_starBound_success() {
-        String expectedMessage = String.format(MESSAGE_STUDENTS_LISTED_OVERVIEW, 2);
-        StarWithinBoundsPredicate predicate = new StarWithinBoundsPredicate(">=", 5);
+    public void execute_findMajorComputerScience_oneStudentFound() {
+        String expectedMessage = String.format(MESSAGE_STUDENTS_LISTED_OVERVIEW, 1);
+        MajorContainsSubStringPredicate predicate = new MajorContainsSubStringPredicate("Computer Science");
         FindCommand command = new FindCommand(predicate);
         expectedModel.updateFilteredStudentList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        assertEquals(Arrays.asList(ALICE, GEORGE), model.getFilteredStudentList());
+        assertEquals(Arrays.asList(BENSON), model.getFilteredStudentList());
     }
 
     @Test
-    public void execute_boltBound_success() {
-        String expectedMessage = String.format(MESSAGE_STUDENTS_LISTED_OVERVIEW, 1);
-        BoltWithinBoundsPredicate predicate = new BoltWithinBoundsPredicate(">", 0);
+    public void execute_findStarOrBolt_success() {
+        // valid operator for find star
+        String starExpectedMessage = String.format(MESSAGE_STUDENTS_LISTED_OVERVIEW, 2);
+        StarWithinBoundsPredicate starPredicate = new StarWithinBoundsPredicate(">=", 5);
+        FindCommand starCommand = new FindCommand(starPredicate);
+        expectedModel.updateFilteredStudentList(starPredicate);
+        assertCommandSuccess(starCommand, model, starExpectedMessage, expectedModel);
+        assertEquals(Arrays.asList(ALICE, GEORGE), model.getFilteredStudentList());
+
+        // valid operator for find bolt
+        String boltExpectedMessage = String.format(MESSAGE_STUDENTS_LISTED_OVERVIEW, 1);
+        BoltWithinBoundsPredicate boltPredicate = new BoltWithinBoundsPredicate("=", 5);
+        FindCommand boltCommand = new FindCommand(boltPredicate);
+        expectedModel.updateFilteredStudentList(boltPredicate);
+        assertCommandSuccess(boltCommand, model, boltExpectedMessage, expectedModel);
+        assertEquals(Arrays.asList(ALICE), model.getFilteredStudentList());
+    }
+
+    @Test
+    public void execute_findTagFriends_multipleStudentsFound() {
+        String expectedMessage = String.format(MESSAGE_STUDENTS_LISTED_OVERVIEW, 3);
+        TagContainsSubStringPredicate predicate = new TagContainsSubStringPredicate("friends");
         FindCommand command = new FindCommand(predicate);
         expectedModel.updateFilteredStudentList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
-        System.out.println(model.getFilteredStudentList());
-        assertEquals(Arrays.asList(ALICE), model.getFilteredStudentList());
+        assertEquals(Arrays.asList(ALICE, BENSON, DANIEL), model.getFilteredStudentList());
     }
 
     @Test

@@ -14,7 +14,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
  */
 public class SortCommandParser implements Parser<SortCommand> {
     private static final Set<String> VALID_FIELDS = new HashSet<>(Arrays.asList(
-            "email", "major", "name", "phone", "star"
+            "email", "major", "name", "phone", "star", "bolt"
     ));
     /**
      * Parses the given {@code String} of arguments in the context of the SortCommand

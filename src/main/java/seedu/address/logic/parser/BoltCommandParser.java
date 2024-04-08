@@ -32,13 +32,7 @@ public class BoltCommandParser implements Parser<BoltCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, BoltCommand.MESSAGE_USAGE));
         } // if no PREFIX used, or if the Preamble is empty, we throw a ParseException
 
-        Index index;
-
-        try {
-            index = ParserUtil.parseIndex(argMultimap.getPreamble());
-        } catch (ParseException pe) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, BoltCommand.MESSAGE_USAGE), pe);
-        }
+        Index index = ParserUtil.parseIndex(argMultimap.getPreamble());
 
         Bolt bolt = ParserUtil.parseBolt(argMultimap.getValue(PREFIX_BOLT).get());
         return new BoltCommand(index, bolt);

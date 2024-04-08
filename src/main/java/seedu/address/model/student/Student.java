@@ -84,6 +84,10 @@ public class Student {
         return star.numOfStars;
     } //get the star count
 
+    public int getBoltCount() {
+        return bolt.numOfBolts;
+    } //get the bolt count
+
     /**
      * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
      * if modification is attempted.

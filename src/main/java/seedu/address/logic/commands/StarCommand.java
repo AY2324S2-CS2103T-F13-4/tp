@@ -21,9 +21,9 @@ public class StarCommand extends Command {
 
     public static final String COMMAND_WORD = "star";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the remark of the student identified "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Give star(s) to the student identified "
             + "by the index number used in the last student listing. "
-            + "Existing remark will be overwritten by the input.\n"
+            + "Stars will be added to the existing number of stars.\n"
             + "Parameters: INDEX (must be a positive integer) "
             + PREFIX_STAR + "[STAR]\n"
             + "Example: " + COMMAND_WORD + " 1 "
@@ -54,12 +54,15 @@ public class StarCommand extends Command {
         }
 
         Student studentToEdit = lastShownList.get(index.getZeroBased()); // get Student indexed
-        Star starToEdit = studentToEdit.getStar(); // return the stars
-        Star edittedStar = new Star(starToEdit.numOfStars + this.star.numOfStars); // new Star to be added
+        int totalStars = this.star.numOfStars + studentToEdit.getStarCount();
+        if (!Star.isValidStar(totalStars)) {
+            throw new CommandException(Star.MESSAGE_CONSTRAINTS);
+        }
+        Star editedStar = new Star(totalStars); // new Star to be added
 
         Student editedStudent = new Student(
                 studentToEdit.getName(), studentToEdit.getPhone(), studentToEdit.getEmail(),
-                studentToEdit.getMajor(), edittedStar, studentToEdit.getBolt(), studentToEdit.getTags());
+                studentToEdit.getMajor(), editedStar, studentToEdit.getBolt(), studentToEdit.getTags());
 
         model.setStudent(studentToEdit, editedStudent);
         model.updateFilteredStudentList(Model.PREDICATE_SHOW_ALL_STUDENTS);

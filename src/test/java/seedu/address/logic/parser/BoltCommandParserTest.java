@@ -5,6 +5,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_BOLT;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static seedu.address.logic.parser.ParserUtil.MESSAGE_INVALID_BOLT;
+import static seedu.address.logic.parser.ParserUtil.MESSAGE_INVALID_INDEX;
 
 import org.junit.jupiter.api.Test;
 
@@ -28,17 +29,16 @@ public class BoltCommandParserTest {
     @Test
     public void parse_invalidArgs_throwsParseException() {
         // invalid index
-        assertParseFailure(parser, "-1" + VALID_BOLT,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, BoltCommand.MESSAGE_USAGE));
+        assertParseFailure(parser, "-1" + VALID_BOLT, MESSAGE_INVALID_INDEX);
 
-        // invalid star value
+        // invalid bolt value
         assertParseFailure(parser, "1" + INVALID_BOLT, MESSAGE_INVALID_BOLT);
 
         // no index specified
         assertParseFailure(parser, VALID_BOLT,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, BoltCommand.MESSAGE_USAGE));
 
-        // no star value specified
+        // no bolt value specified
         assertParseFailure(parser, "1",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, BoltCommand.MESSAGE_USAGE));
     }
@@ -61,19 +61,15 @@ public class BoltCommandParserTest {
     @Test
     public void parse_invalidPreamble_failure() {
         // negative index
-        assertParseFailure(parser, "-5" + VALID_BOLT,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, BoltCommand.MESSAGE_USAGE));
+        assertParseFailure(parser, "-5" + VALID_BOLT, MESSAGE_INVALID_INDEX);
 
         // zero index
-        assertParseFailure(parser, "0" + VALID_BOLT,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, BoltCommand.MESSAGE_USAGE));
+        assertParseFailure(parser, "0" + VALID_BOLT, MESSAGE_INVALID_INDEX);
 
         // invalid arguments being parsed as preamble
-        assertParseFailure(parser, "1 some random string" + VALID_BOLT,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, BoltCommand.MESSAGE_USAGE));
+        assertParseFailure(parser, "1 some random string" + VALID_BOLT, MESSAGE_INVALID_INDEX);
 
         // invalid prefix being parsed as preamble
-        assertParseFailure(parser, "1 i/ string" + VALID_BOLT,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, BoltCommand.MESSAGE_USAGE));
+        assertParseFailure(parser, "1 i/ string" + VALID_BOLT, MESSAGE_INVALID_INDEX);
     }
 }

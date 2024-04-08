@@ -37,20 +37,20 @@ public interface Model {
     /**
      * Returns the user prefs' address book file path.
      */
-    Path getAddressBookFilePath();
+    Path getClassMonitorFilePath();
 
     /**
      * Sets the user prefs' address book file path.
      */
-    void setAddressBookFilePath(Path addressBookFilePath);
+    void setClassMonitorFilePath(Path classMonitorFilePath);
 
     /**
-     * Replaces address book data with the data in {@code addressBook}.
+     * Replaces address book data with the data in {@code classMonitor}.
      */
-    void setAddressBook(ReadOnlyAddressBook addressBook);
+    void setClassMonitor(ReadOnlyClassMonitor classMonitor);
 
-    /** Returns the AddressBook */
-    ReadOnlyAddressBook getAddressBook();
+    /** Returns the ClassMonitor */
+    ReadOnlyClassMonitor getClassMonitor();
 
     /**
      * Returns true if a student with the same identity as {@code student} exists in the address book.

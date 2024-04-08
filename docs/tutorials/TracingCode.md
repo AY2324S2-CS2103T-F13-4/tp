@@ -120,7 +120,7 @@ Recall from the User Guide that the `edit` command has the format: `edit INDEX [
 
         CommandResult commandResult;
         //Parse user input from String to a Command
-        Command command = addressBookParser.parseCommand(commandText);
+        Command command = classMonitorParser.parseCommand(commandText);
         //Executes the Command and stores the result
         commandResult = command.execute(model);
 
@@ -239,7 +239,7 @@ Recall from the User Guide that the `edit` command has the format: `edit INDEX [
     }
     ```
 
-1. It appears that a `JsonAdaptedStudent` is created for each `Student` and then added to the `JsonSerializableAddressBook`.
+1. It appears that a `JsonAdaptedStudent` is created for each `Student` and then added to the `JsonSerializableClassMonitor`.
    This is because regular Java objects need to go through an _adaptation_ for them to be suitable to be saved in JSON format.
 
 1. While you are stepping through the classes in the `Storage` component, here is the component's class diagram to help you understand how those classes fit into the structure of the component.<br>

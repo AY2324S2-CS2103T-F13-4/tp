@@ -4,9 +4,9 @@ skinparam ArrowFontStyle plain
 
 box Logic LOGIC_COLOR_T1
 participant ":LogicManager" as LogicManager LOGIC_COLOR
-participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
-participant ":FindStarsLessThanCommandParser" as FindStarsLessThanCommandParser LOGIC_COLOR
-participant "d:FindStarsLessThanCommand" as FindStarsLessThanCommand LOGIC_COLOR
+participant ":ClassMonitorParser" as AddressBookParser LOGIC_COLOR
+participant ":FindCommandParser" as FindCommandParser LOGIC_COLOR
+participant "d:FindCommand" as FindCommand LOGIC_COLOR
 participant "r:CommandResult" as CommandResult LOGIC_COLOR
 end box
 
@@ -14,64 +14,68 @@ box Model MODEL_COLOR_T1
 participant "m:Model" as Model MODEL_COLOR
 end box
 
-[-> LogicManager : execute("findStarsLT 1")
+[-> LogicManager : execute("find name Alex")
 activate LogicManager
 
-LogicManager -> AddressBookParser : parseCommand("findStarsLT 1")
+
+LogicManager -> ClassMonitorParser : parseCommand("find name Alex")
 activate AddressBookParser
 
-create FindStarsLessThanCommandParser
-AddressBookParser -> FindStarsLessThanCommandParser
-activate FindStarsLessThanCommandParser
+create FindCommandParser
+ClassMonitorParser -> FindCommandParser
+activate FindCommandParser
 
-FindStarsLessThanCommandParser --> AddressBookParser
-deactivate FindStarsLessThanCommandParser
+FindCommandParser --> ClassMonitorParser
+deactivate FindCommandParser
 
-AddressBookParser -> FindStarsLessThanCommandParser : parse("1")
-activate FindStarsLessThanCommandParser
+ClassMonitorParser -> FindCommandParser : parse(" name Alex")
+activate FindCommandParser
 
-create StarsLessThanPredicate
-FindStarsLessThanCommandParser -> StarsLessThanPredicate
-activate StarsLessThanPredicate
+FindCommandParser --> FindCommandParser : parseFindName("Alex")
 
-StarsLessThanPredicate --> FindStarsLessThanCommandParser
-deactivate StarsLessThanPredicate
+create NameContainsKeywordPredicate
+FindCommandParser -> NameContainsKeywordPredicate
+activate NameContainsKeywordPredicate
 
-create FindStarsLessThanCommand
-FindStarsLessThanCommandParser -> FindStarsLessThanCommand
-activate FindStarsLessThanCommand
+NameContainsKeywordPredicate --> FindCommandParser
+deactivate NameContainsKeywordPredicate
 
-FindStarsLessThanCommand --> FindStarsLessThanCommandParser :
-deactivate FindStarsLessThanCommand
+create FindCommand
+FindCommandParser -> FindCommand
+activate FindCommand
 
-FindStarsLessThanCommandParser --> AddressBookParser : d
-deactivate FindStarsLessThanCommandParser
+FindCommand --> FindCommandParser :
+deactivate FindCommand
+
+FindCommandParser --> ClassMonitorParser : d
+deactivate FindCommandParser
 'Hidden arrow to position the destroy marker below the end of the activation bar.
-FindStarsLessThanCommandParser -[hidden]-> AddressBookParser
-destroy FindStarsLessThanCommandParser
-deactivate FindStarsLessThanCommandParser
+FindCommandParser -[hidden]-> ClassMonitorParser
+destroy FindCommandParser
+deactivate FindCommandParser
 
-AddressBookParser --> LogicManager : d
-deactivate AddressBookParser
 
-LogicManager -> FindStarsLessThanCommand : execute(m)
-activate FindStarsLessThanCommand
+ClassMonitorParser --> LogicManager : d
+deactivate ClassMonitorParser
 
-FindStarsLessThanCommand -> Model : updateFilteredStudentList(predicate)
+LogicManager -> FindCommand : execute(m)
+activate FindCommand
+
+FindCommand -> Model : updateFilteredStudentList(predicate)
 activate Model
 
-Model --> FindStarsLessThanCommand : Updated filtered student list
+Model --> FindCommand : Updated filtered student list
 deactivate Model
 
 create CommandResult
-FindStarsLessThanCommand -> CommandResult
+FindCommand -> CommandResult
 activate CommandResult
 
-CommandResult --> FindStarsLessThanCommand
+CommandResult --> FindCommand
 deactivate CommandResult
 
-FindStarsLessThanCommand --> LogicManager : r
-deactivate FindStarsLessThanCommand
+FindCommand --> LogicManager : r
+deactivate FindCommand
 
 [<--LogicManager
 deactivate LogicManager

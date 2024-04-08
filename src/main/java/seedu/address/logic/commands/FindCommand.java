@@ -18,19 +18,14 @@ public class FindCommand extends Command {
     public static final String COMMAND_WORD = "find";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds students based on specified criteria.\n"
-            + "Parameters: FIELD KEYWORD [MORE_KEYWORDS]...\n"
-            + "Example: " + COMMAND_WORD + " name Alex Alice\n"
-            + "Example: " + COMMAND_WORD + " major Computer Science\n"
-            + "Example: " + COMMAND_WORD + " star < 1\n\n"
-            + "Available fields:\n"
-            + "- name: Searches students by name using keywords (case-insensitive).\n"
-            + "- major: Searches students by major.\n"
-            + "- star: Searches students by number of stars using comparison operators (<, <=, >, >=, =).\n"
-            + "- bolt: Searches students by number of bolts using comparison operators (<, <=, >, >=, =).\n"
-            + "- tags: Searches students by tag using.\n\n"
+            + "Parameters: FIELD CRITERIA \n"
+            + "Example: " + COMMAND_WORD + " name Alex\n"
+            + "Example: " + COMMAND_WORD + " star < 1\n"
+            + "Available fields: name, major, star, bolt, tag\n"
             + "Note:\n"
             + "- For name field, multiple keywords can be used to perform a keyword search.\n"
-            + "- For star/bolt fields, use comparison operators (<, <=, >, >=, =) followed by a number.";
+            + "- For star/bolt field, CRITERIA consists of comparison operators (<, <=, >, >=, =)\n"
+            + "followed by a whitespace and a single number.";
 
     private final Predicate<Student> predicate;
 
@@ -59,6 +54,41 @@ public class FindCommand extends Command {
 
         FindCommand otherFindCommand = (FindCommand) other;
         return predicate.equals(otherFindCommand.predicate);
+    }
+
+    public static String getSpecificMessageUsage(String field) {
+        String specificMessageUsage = COMMAND_WORD + " " + field + ": ";
+        switch (field) {
+        case "name":
+            specificMessageUsage += "Finds students with names that contain any of the keywords specified.\n"
+                    + "Parameters: KEYWORD [MORE KEYWORDS]\n"
+                    + "Example: " + COMMAND_WORD + " name Alex Bernice";
+            break;
+        case "major":
+            specificMessageUsage += "Finds students with majors that contain the keyword specified.\n"
+                    + "Parameters: KEYWORD\n"
+                    + "Example: " + COMMAND_WORD + " major Computer Science";
+            break;
+        case "star":
+            specificMessageUsage += "Finds students with stars that fall within the specified range.\n"
+                    + "Parameters: OPERATOR NUMBER\n"
+                    + "Example: " + COMMAND_WORD + " star < 1\n"
+                    + "Note: Valid operators are <, <=, >, >=, =. Only non-negative integers.";
+            break;
+        case "bolt":
+            specificMessageUsage += "Finds students with bolts that fall within the specified range.\n"
+                    + "Parameters: OPERATOR NUMBER\n"
+                    + "Example: " + COMMAND_WORD + " bolt > 1\n"
+                    + "Note: Valid operators are <, <=, >, >=, =. Only non-negative integers.";
+            break;
+        case "tag":
+            specificMessageUsage += "Finds students with tags that contain the keyword specified.\n"
+                    + "Parameters: KEYWORD\n"
+                    + "Example: " + COMMAND_WORD + " tag CS2103T";
+            break;
+        default:
+        }
+        return specificMessageUsage;
     }
 
     @Override
