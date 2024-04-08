@@ -100,18 +100,6 @@ Examples:
 
 **Example:**
 
-{% capture notes %}
-**Assumption:**
-
-Address book is empty
-{% endcapture %}
-{%
-include command-format.md
-notes=notes
-input="add n/John Doe p/98765432 e/johnd@u.nus.edu m/Computer Science"
-commandOutputBox="images/Ui.png"
-%}
-
 ### Listing all students : `list`
 
 Shows a list of all students in the address book.
