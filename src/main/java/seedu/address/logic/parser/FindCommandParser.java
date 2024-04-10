@@ -95,7 +95,9 @@ public class FindCommandParser implements Parser<FindCommand> {
             String sOperator = starArgs[0];
             Integer sOperand = Integer.parseInt(starArgs[1].trim());
 
-            if (isInvalidOperator(sOperator) || sOperand < 0) {
+            if (isInvalidOperator(sOperator)
+                    || sOperand < 0 || sOperand > 50000
+                    || isInvalidBound(sOperator, sOperand)) {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                         FindCommand.getSpecificMessageUsage("star")));
             }
@@ -119,7 +121,9 @@ public class FindCommandParser implements Parser<FindCommand> {
             String bOperator = boltArgs[0];
             Integer bOperand = Integer.parseInt(boltArgs[1].trim());
 
-            if (isInvalidOperator(bOperator) || bOperand < 0) {
+            if (isInvalidOperator(bOperator)
+                    || bOperand < 0 || bOperand > 50000
+                    || isInvalidBound(bOperator, bOperand)) {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                         FindCommand.getSpecificMessageUsage("bolt")));
             }
@@ -157,6 +161,18 @@ public class FindCommandParser implements Parser<FindCommand> {
                 && !operator.equals("<=")
                 && !operator.equals(">=")
                 && !operator.equals("=");
+    }
+
+    public boolean isInvalidBound(String operator, Integer operand) {
+        // Star and Bolt are at least 0 so < 0 is an invalid bound
+        if (operator.equals("<") && operand.equals(0)) {
+            return true;
+        }
+        // Star and Bolt are at most 50000 so > 50000 is an invalid bound
+        if (operator.equals(">") && operand.equals(50000)) {
+            return true;
+        }
+        return false;
     }
 
 }

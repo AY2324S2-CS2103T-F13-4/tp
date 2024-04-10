@@ -73,13 +73,17 @@ public class FindCommand extends Command {
             specificMessageUsage += "Finds students with stars that fall within the specified range.\n"
                     + "Parameters: OPERATOR NUMBER\n"
                     + "Example: " + COMMAND_WORD + " star < 1\n"
-                    + "Note: Valid operators are <, <=, >, >=, =. Only non-negative integers.";
+                    + "Note: Valid operators are <, <=, >, >=, =.\n"
+                    + "      Valid numbers are integers in range 0 to 50000.\n"
+                    + "      Invalid combinations are < 0 and > 50000 as they fall outside of the star range.";
             break;
         case "bolt":
             specificMessageUsage += "Finds students with bolts that fall within the specified range.\n"
                     + "Parameters: OPERATOR NUMBER\n"
                     + "Example: " + COMMAND_WORD + " bolt > 1\n"
-                    + "Note: Valid operators are <, <=, >, >=, =. Only non-negative integers.";
+                    + "Note: Valid operators are <, <=, >, >=, =.\n"
+                    + "      Valid numbers are integers in the range 0 to 50000.\n"
+                    + "      Invalid combinations are < 0 and > 50000 as they fall outside of the bolt range.";
             break;
         case "tag":
             specificMessageUsage += "Finds students with tags that contain the keyword specified.\n"
