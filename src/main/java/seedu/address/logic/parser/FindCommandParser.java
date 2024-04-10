@@ -150,7 +150,7 @@ public class FindCommandParser implements Parser<FindCommand> {
     }
 
     /**
-     * Checks if the operator is valid.
+     * Checks if the operator is invalid.
      *
      * @param operator
      * @return
@@ -163,6 +163,13 @@ public class FindCommandParser implements Parser<FindCommand> {
                 && !operator.equals("=");
     }
 
+    /**
+     * Checks if the operator and operand combination is invalid.
+     *
+     * @param operator
+     * @param operand
+     * @return
+     */
     public boolean isInvalidBound(String operator, Integer operand) {
         // Star and Bolt are at least 0 so < 0 is an invalid bound
         if (operator.equals("<") && operand.equals(0)) {
