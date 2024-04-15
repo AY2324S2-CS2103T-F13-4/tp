@@ -11,7 +11,7 @@ hide empty members
 skinparam ClassAttributeFontColor #FFFFFF
 
 package Model as ModelPackage <<Rectangle>>{
-    Class Person {
+    Class Student {
         name
         phone
         major
@@ -28,14 +28,14 @@ package Model as ModelPackage <<Rectangle>>{
 ' Create an invisible class in the diagram to draw the arrow representing
 ' the external user of the model
 class HiddenOutside #FFFFFF
-HiddenOutside ..> Person
+HiddenOutside ..> Student
 
-Person *-right-> Stars
+Student *-right-> Stars
 Stars *-right> "*" Comment
 
 
-'Person -[hidden]up--> I
-'UniquePersonList -[hidden]right-> I
+'Student -[hidden]up--> I
+'UniqueStudentList -[hidden]right-> I
 
-'ModelManager --> "~* filtered" Person
+'ModelManager --> "~* filtered" Student
 @enduml

@@ -532,7 +532,7 @@ The following legend describes the symbols used in this section:
 
 #### Use case 1: Delete a student
 
-[[ main-success-scenario-mss:MSS ]]:
+MSS:
 
 1.  TA requests to list students
 2.  ClassMonitor shows a list of students
@@ -555,7 +555,7 @@ Extensions:
 
 #### Use case 2: Add a student
 
-[[ main-success-scenario-mss:MSS ]]:
+MSS:
 
 1. TA requests to add a student in the list
 2. TA includes the relevant student's info
@@ -572,7 +572,7 @@ Extensions:
 
 #### Use case 3: Add a tag to a student
 
-[[ main-success-scenario-mss:MSS ]]:
+MSS:
 
 1.  TA requests to list students
 2.  ClassMonitor shows a list of students
@@ -595,7 +595,7 @@ Extensions:
 
 #### Use case 4: Find a student by name
 
-[[ main-success-scenario-mss:MSS ]]:
+MSS:
 
 1.  TA requests to list students
 2.  ClassMonitor shows a list of students
@@ -618,7 +618,7 @@ Extensions:
 
 #### Use case 5: Add a star/bolt to a student
 
-[[ main-success-scenario-mss:MSS ]]:
+MSS:
 
 1.  TA requests to list students
 2.  ClassMonitor shows a list of students
@@ -635,7 +635,7 @@ Extensions:
 
 #### Use case 6: Find students by a specific field
 
-[[ main-success-scenario-mss:MSS ]]:
+MSS:
 
 1.  TA requests to list students
 2.  ClassMonitor shows a list of students
@@ -658,7 +658,7 @@ Extensions:
 
 #### Use case 7: Sort list of students by a specific field
 
-[[ main-success-scenario-mss:MSS ]]:
+MSS:
 
 1.  TA requests to list students
 2.  ClassMonitor shows a list of students
