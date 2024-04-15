@@ -1,0 +1,28 @@
+@startuml
+!pragma useVerticalIf on
+start
+:User enters find command;
+if () then ([Valid field is provided])
+    if () then ([Valid criteria is provided])
+        if () then ([Specified field is name/major/tag])
+            :Students whose fields match the given criteria are shown;
+            stop
+        else ([Specified field is star/bolt])
+            if () then ([Specified number is an integer in range 0 to 2147483647])
+                :Students with star/bolt values within the specified range are shown;
+                stop
+            else ([else])
+                :Error: Invalid number;
+                stop
+            endif
+        endif
+    else ([else])
+        :Error: Invalid command format;
+        stop
+    endif
+else ([else])
+    :Error: Invalid command format;
+    stop
+endif
+
+@enduml
