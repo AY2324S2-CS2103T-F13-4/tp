@@ -129,7 +129,7 @@ Here's a (partial) class diagram of the `Logic` component:
 
 The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("find name Alex")` API call as an example.
 
-![Interactions Inside the Logic Component for the `delete 1` Command](images/FindStarsLessThanSequenceDiagram.png)
+![Interactions Inside the Logic Component for the `delete 1` Command](images/FindCommandSequenceDiagram.png)
 
 ```note
 The lifeline for `FindCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
