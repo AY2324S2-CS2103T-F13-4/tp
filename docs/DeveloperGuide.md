@@ -61,7 +61,7 @@ The *Sequence Diagram* below shows how the components interact with each other f
 Each of the four main components (also shown in the diagram above),
 
 * defines its *API* in an `interface` with the same name as the Component.
-* implements its functionality using a concrete `{Component Name} Manager` class (which follows the corresponding API `interface` mentioned in the previous point).
+* implements its functionality using a concrete `{Component Name}Manager` class (which follows the corresponding API `interface` mentioned in the previous point).
 
 For example, the `Logic` component defines its API in the `Logic.java` interface and implements its functionality using the `LogicManager.java` class which follows the `Logic` interface. Other components interact with a given component through its interface rather than the concrete class (reason: to prevent outside components from being coupled to the implementation of a component), as illustrated in the (partial) class diagram below.
 
@@ -152,7 +152,7 @@ The `Storage` component,
 
 ### Common classes
 
-Classes used by multiple components are in the `seedu.classmonitor.commons` package.
+Classes used by multiple components are in the `seedu.address.commons` package.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -179,7 +179,7 @@ Here is the sequence diagram showing how a star operation goes through the `Logi
 
 ![StarSequenceDiagram](images/StarCommandSequenceDiagram.png)
 
-Step 1. The user launches the application for the first time and enters in command: `star 1 s/2`.
+Step 1. The user enters in command: `star 1 s/2`.
 
 Step 2. The `LogicManager` calls on `ClassMonitorParser` to parse the String.
 
@@ -190,13 +190,13 @@ If the number of stars is negative (i.e. < 1), then it will raise a parse error.
 ```
 
 
-Step 4. `LogicManager` calls on `StarCommand.execute()`, which updates the classmonitor with the new number of stars.
+Step 4. `LogicManager` calls on `StarCommand.execute()`, which updates the ClassMonitor with the new number of stars.
 
 #### Design considerations:
 
 **Aspect: How star executes:**
 
-* **Method 1:** Updates the number of stars using `Star` command.
+* **Method 1:** Increments the number of stars using `Star` command.
     * Pros: Easy to implement, easy to use.
     * Cons: Does not allow user to edit the number of stars.
 
@@ -224,7 +224,7 @@ Here is the sequence diagram showing how a bolt operation goes through the `Logi
 
 ![BoltSequenceDiagram](images/BoltCommandSequenceDiagram.png)
 
-Step 1. The user launches the application for the first time and enters in command: `bolt 1 b/2`.
+Step 1. The user enters in command: `bolt 1 b/2`.
 
 Step 2. The `LogicManager` calls on `ClassMonitorParser` to parse the String.
 
@@ -234,13 +234,13 @@ Step 3. The `ClassMonitorParser` calls `BoltCommandParser.parse()`, which return
 If the number of bolts is negative (i.e. < 1), then it will raise a parse error.
 ```
 
-Step 4. `LogicManager` calls on `BoltCommand.execute()`, which updates the classmonitor with the new number of bolts.
+Step 4. `LogicManager` calls on `BoltCommand.execute()`, which updates the ClassMonitor with the new number of bolts.
 
 #### Design considerations:
 
 **Aspect: How bolt executes:**
 
-* **Method 1:** Updates the number of bolts using `Bolt` command.
+* **Method 1:** Increments the number of bolts using `Bolt` command.
     * Pros: Easy to implement, easy to use.
     * Cons: Does not allow user to edit the number of bolts.
 
@@ -257,7 +257,7 @@ The sorting mechanism is facilitated by `SortCommand`, which is called by its `e
 based on one of its fields either in ascending or descending order
 
 * `SortCommandParser#parse()` — Parses the parameters of the sort command from its command-line String input.
-* `SortCommand#execute()` — Updates the `ClassMonitor` to display the sorted list.
+* `SortCommand#execute()` — Updates the ClassMonitor to display the sorted list.
 
 #### Feature Details
 
@@ -267,7 +267,7 @@ Here is the sequence diagram showing how a sort operation goes through the `Logi
 
 ![SortSequenceDiagram](images/SortCommandSequenceDiagram.png)
 
-Step 1. The user launches the application for the first time and enters in command: `sort name desc`.
+Step 1. The user enters in command: `sort name desc`.
 
 Step 2. The `LogicManager` calls on `ClassMonitorParser` to parse the String.
 
@@ -287,27 +287,29 @@ The find mechanism is facilitated by `FindCommand`, which is called by its `exec
 based on one of its fields and a given criteria
 
 * `FindCommandParser#parse()` — Parses the parameters of the find command from its command-line String input.
-* `FindCommand#execute()` — Updates the `ClassMonitor` to display the filtered list.
+* `FindCommand#execute()` — Updates the ClassMonitor to display the filtered list.
 
 #### Feature Details
 
 Here is the activity diagram showing the process of the `Find` command:
 
+![FindActivityDiagram](images/FindActivityDiagram.png)
+
 Here is the sequence diagram showing how a find operation goes through the `Logic`, `Model` and `Storage` components.
 
 ![FindSequenceDiagram](images/FindCommandSequenceDiagram.png)
 
-Step 1. The user launches the application and enters in command: `find name Alex`.
+Step 1. The user specifies the field and criteria to find students by, and enters in command: `find field criteria` (e.g. find name Alex).
 
 Step 2. The `LogicManager` calls on `ClassMonitorParser` to parse the String.
 
-Step 3. The `ClassMonitorParser` calls `FindCommandParser.parse()`, which then calls `FindCommandParser.parseFindName()`, which returns a `FindCommand`.
+Step 3. The `ClassMonitorParser` calls `FindCommandParser.parse()`, which then calls the parser for the specified field (e.g. `FindCommandParser.parseFindName()`), which returns a `FindCommand`.
 
 ```note
-If either the field `field` or sorting order `isAscending`, then it will raise a parse error.
+If the field or criteria specified is invalid, a parse error will be raised.
 ```
 
-Step 4. `LogicManager` calls on `SortCommand.execute()`, which updates the student list with the new filtered list.
+Step 4. `LogicManager` calls on `FindCommand.execute()`, which updates the student list with the new filtered list.
 
 
 ### \[Proposed\] Undo/redo feature
