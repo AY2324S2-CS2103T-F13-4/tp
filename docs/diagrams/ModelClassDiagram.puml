@@ -19,6 +19,7 @@ Class Email
 Class Name
 Class Phone
 Class Star
+Class Bolt
 Class Tag
 
 Class I #FFFFFF
@@ -43,6 +44,7 @@ Student *--> Phone
 Student *--> Email
 Student *--> Major
 Student *--> Star
+Student *--> Bolt
 Student *--> "*" Tag
 
 Student -[hidden]up--> I

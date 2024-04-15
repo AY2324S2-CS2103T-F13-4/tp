@@ -17,5 +17,7 @@ Student -up-> "*" Tag
 Student *--> Name
 Student *--> Phone
 Student *--> Email
-Student *--> Address
+Student *--> Major
+Student *--> Star
+Student *--> Bolt
 @enduml
