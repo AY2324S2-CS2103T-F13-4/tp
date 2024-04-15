@@ -19,6 +19,7 @@ public class StarWithinBoundsPredicate implements Predicate<Student> {
      * @param value
      */
     public StarWithinBoundsPredicate(String operator, Integer value) {
+        assert(value > -1);
         this.operator = operator;
         this.value = value;
     }
