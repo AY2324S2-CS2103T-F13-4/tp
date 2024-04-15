@@ -5,17 +5,15 @@ start
 if () then ([else])
   :Error: Invalid command format;
   stop
-( [Field and Direction provided]) elseif () then ([else])
+( [Both Field and Sorting Order provided]) elseif () then ([else])
   :Error: Invalid command format;
   stop
-( [Valid Field provided]) elseif () then ([else])
-  :Error: Invalid command format;
-  stop
+else ( [Valid Field and Valid Sorting Order provided])
 
 endif
   :Sort Command successfully executes.The displayed list of
 students is updated to be in sorted order of the provided field
-in the specified direction;
+in the specified order;
 stop
 
 @enduml
