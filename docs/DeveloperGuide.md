@@ -6,9 +6,9 @@ show-toc: true
 
 ## About ClassMonitor
 
-ClassMonitor is a Student Management System that empowers TAs and Professors to manage their student particulars and obtain insights about their students' performance ratings. As a TA, you can easily view and edit your students' particulars during your daily classes. Utilize ClassMonitor’s flexible tagging system to help you organize your students according to their modules and classes. Finally, streamline your performance grading decisions by deriving insights from your students' performance indicators across time, through ClassMonitor’s statistics – you can allocate stars to students for good class participation and bolts for absenteeism!
+ClassMonitor is a **Student Management System** that empowers TAs and Professors to manage their student particulars and obtain insights about their students' performance ratings. As a TA, you can easily view and edit your students' particulars during your daily classes. Utilize ClassMonitor’s flexible **tagging system** to help you organize your students according to their modules and classes. Finally, streamline your performance grading decisions by deriving insights from your students' performance indicators across time, through ClassMonitor’s **statistics** – you can allocate stars to students for good class participation and bolts for absenteeism!
 
-The Developer Guide offers comprehensive documentation on the design and implementation of ClassMonitor. It includes details on the architecture of ClassMonitor, specifications for individual components, and an overview of the software's functionality and operation.
+The Developer Guide offers comprehensive documentation on the design and implementation of ClassMonitor. It includes details on the architecture of ClassMonitor, specifications for individual components, and an overview of the software's functionality and operations.
 
 {% include toc.md header=true show-in-toc=true ordered=true %}
 --------------------------------------------------------------------------------------------------------------------
