@@ -41,11 +41,11 @@ public class SampleDataUtil {
     }
 
     public static ReadOnlyClassMonitor getSampleClassMonitor() {
-        ClassMonitor sampleAb = new ClassMonitor();
+        ClassMonitor sampleCm = new ClassMonitor();
         for (Student sampleStudent : getSampleStudents()) {
-            sampleAb.addStudent(sampleStudent);
+            sampleCm.addStudent(sampleStudent);
         }
-        return sampleAb;
+        return sampleCm;
     }
 
     /**

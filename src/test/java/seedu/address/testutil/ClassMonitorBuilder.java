@@ -6,7 +6,7 @@ import seedu.address.model.student.Student;
 /**
  * A utility class to help with building ClassMonitor objects.
  * Example usage: <br>
- *     {@code ClassMonitor ab = new ClassMonitorBuilder().withStudent("John", "Doe").build();}
+ *     {@code ClassMonitor cm = new ClassMonitorBuilder().withStudent("John", "Doe").build();}
  */
 public class ClassMonitorBuilder {
 

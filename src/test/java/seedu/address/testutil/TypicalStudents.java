@@ -117,11 +117,11 @@ public class TypicalStudents {
      * Returns an {@code ClassMonitor} with all the typical students.
      */
     public static ClassMonitor getTypicalClassMonitor() {
-        ClassMonitor ab = new ClassMonitor();
+        ClassMonitor cm = new ClassMonitor();
         for (Student student : getTypicalStudents()) {
-            ab.addStudent(student);
+            cm.addStudent(student);
         }
-        return ab;
+        return cm;
     }
 
     public static List<Student> getTypicalStudents() {

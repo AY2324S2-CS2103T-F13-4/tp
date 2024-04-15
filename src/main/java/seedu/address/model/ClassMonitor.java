@@ -10,7 +10,7 @@ import seedu.address.model.student.Student;
 import seedu.address.model.student.UniqueStudentList;
 
 /**
- * Wraps all data at the address-book level
+ * Wraps all data at the CM level
  * Duplicates are not allowed (by .isSameStudent comparison)
  */
 public class ClassMonitor implements ReadOnlyClassMonitor {
