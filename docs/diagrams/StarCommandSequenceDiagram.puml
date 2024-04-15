@@ -15,7 +15,7 @@ participant "model\n:Model" as Model MODEL_COLOR
 participant ":Star" as Star MODEL_COLOR
 end box
 
-box Model STORAGE_COLOR_T1
+box Storage STORAGE_COLOR_T1
 participant "storage\n:Storage" as Storage MODEL_COLOR
 end box
 
